@@ -9,5 +9,10 @@ namespace Sharp_Shooters
     internal class User
     {
 
+       public void LoanMoney()
+        {
+
+        }
+
     }
 }
