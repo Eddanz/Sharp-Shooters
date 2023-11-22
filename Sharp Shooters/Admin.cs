@@ -9,5 +9,7 @@ namespace Sharp_Shooters
     internal class Admin : User
     {
 
+
+        public void 
     }
 }
