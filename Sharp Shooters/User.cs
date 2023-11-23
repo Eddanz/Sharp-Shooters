@@ -137,7 +137,7 @@ namespace Sharp_Shooters
             var sourceAccount = loggedInUser.Accounts[fromAccountIndex - 1];
 
             Console.WriteLine($"Transfer from {sourceAccount.AccountName}\nBalance: {sourceAccount.AccountBalance}");
-
+            
             Console.WriteLine("Enter the username of the recipient:");//Lägg in alla användare
             string recipientUsername = Console.ReadLine().ToLower();
 
