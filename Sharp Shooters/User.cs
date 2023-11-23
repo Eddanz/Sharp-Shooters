@@ -81,6 +81,43 @@ namespace Sharp_Shooters
             }
             return null;
         }
+        public void OpenNewAccount(User user)//Method to open a new account
+        {
+            Console.Clear();
+            Console.Write("Name the account: ");
+            string accountName = Console.ReadLine();
+
+            Console.Write($"Deposit Cashish in {accountName}: ");
+            if (double.TryParse(Console.ReadLine(), out double deposit))
+            {
+                Accounts newAccount = new Accounts(accountName, deposit);
+                user.Accounts.Add(newAccount);
+
+                Console.WriteLine($"{accountName} has been created with a balance of {deposit:C}.");
+                Console.WriteLine("Press Enter to Continue...");
+                Console.ReadLine();
+            }
+        }
+        public void OpenSavingsAccount(User user)//Method to open a savings account
+        {
+            Console.Clear();
+            Console.Write("Name the account: ");
+            string accountName = "Savings Account";
+            double interest = 0.035;
+
+            Console.Write($"Deposit Cashish in {accountName}: ");
+            if (double.TryParse(Console.ReadLine(), out double deposit))
+            {
+                Accounts newAccount = new Accounts(accountName, deposit);
+                user.Accounts.Add(newAccount);
+
+                Console.WriteLine($"{accountName} has been created with a balance of {deposit:C}.");
+                Console.WriteLine($"The interest on your {accountName} will be: {deposit * interest:C}");
+                Console.WriteLine("Press Enter to Continue...");
+                Console.ReadLine();
+            }
+        }
+    }
         public void InternalTransfer()
         {
             foreach (var account in Accounts)
