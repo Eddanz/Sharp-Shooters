@@ -11,10 +11,10 @@ namespace Sharp_Shooters
         public List<Accounts> Accounts { get; set; }
 
         
-        public User(string name, int password, List<Accounts> accounts)
+        public User(string name, int pincode, List<Accounts> accounts)
         {
             UserName = name;
-            PinCode = password;            
+            PinCode = pincode;            
             Accounts = accounts;
         }
 
@@ -117,7 +117,7 @@ namespace Sharp_Shooters
                 Console.ReadLine();
             }
         }
-    }
+
         public void InternalTransfer()
         {
             foreach (var account in Accounts)
@@ -136,10 +136,5 @@ namespace Sharp_Shooters
 
         }
     }
-
-    
-
-
-
     
 }
