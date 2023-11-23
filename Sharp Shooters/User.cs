@@ -4,11 +4,13 @@ namespace Sharp_Shooters
 {
     internal class User
     {
+        
 
         public string UserName {  get; set; }
         public int PinCode { get; set; }
         public List<Accounts> Accounts { get; set; }
 
+        
         public User(string name, int password, List<Accounts> accounts)
         {
             UserName = name;
@@ -18,81 +20,89 @@ namespace Sharp_Shooters
 
         public void AccountOverview()
         {
-            Console.WriteLine($"Dina bankkonton för {UserName}:");
+            Console.WriteLine($"The bankaccounts for: {UserName}:");
             
             foreach (var account in Accounts)
             {
-                Console.WriteLine($"Konto: {account.AccountName}\nSaldo: {account.AccountBalance}");
+                Console.WriteLine($"Account: {account.AccountName}\nBalance: {account.AccountBalance}");
             }
+            
         }
+        
 
         public static User LogIn(List<User> users)
         {
 
             string enterName ="";
-            int loginAttempts = 3; //Hur många försök användaren har att försöka logga in
-            while (loginAttempts != 0) //While-loop som körs så länge försöken som är kvar inte är noll
+            int loginAttempts = 3; //The attempts the user has to login.
+            while (loginAttempts != 0) //While-loop that runs as long as the login attempts are not 0.
             {
                 Console.Clear();
-                Console.Write("Användarnamn: ");
+                Console.Write("Username: ");
                 enterName = Console.ReadLine().ToLower();
-                Console.Write("Pinkod: ");
+                Console.Write("Pincode: ");
                 if (int.TryParse(Console.ReadLine(), out int enterPincode))
                 {
-                    //Med hjälp av FirstOrDefualt och lambda-uttryck så söker den igenom listan av användare och ser om den hittar matchning med inmatat användar namn och pinkod,
-                    //returnerar sedan en inloggad användare som tilldelas till loggedInUser.
+                    //Using the FirstOfDeafult and Lambda expression it searches through the list of users and looks for a matching username and pincode, Return the the user as loggedInUser.
+                    
                     User loggedInUser = users.FirstOrDefault(u => u.UserName == enterName && u.PinCode == enterPincode);
 
-                    if (loggedInUser != null) //Om loggedInUser tilldelats en användare
+                    if (loggedInUser != null) //If loggedInUser has returned a value
                     {
                         Console.Clear();
-                        Console.WriteLine($"\nInloggningen lyckades, varmt välkommen {loggedInUser.UserName.ToUpper()}!" +
-                            $"\nVänligen vänta medan jag hämtar dina konton...");
-                        Thread.Sleep(3000);
-                        return loggedInUser; //Returnerar den inloggade användaren
+                        Console.WriteLine($"\nLog in succesfull, Welcome {loggedInUser.UserName.ToUpper()}!" +
+                            $"\nPlease wait while the information is retrived...");
+                        Thread.Sleep(2000);
+                        return loggedInUser; //Returns the loggedInUser
+                        
+                        
                     }
-                    else //Om användaren skriver in fel användarnamn eller pinkod
+                    else //If the user enters the wrong credentials
                     {
-                        loginAttempts--; //Tar bort ett inloggningsförsök
-                        Console.WriteLine($"\nOjdå... Inloggningen misslyckades. Fel användarnamn eller pinkod.\nDu har {loginAttempts} försök kvar!\nTryck ENTER för att fortsätta");
+                        loginAttempts--; //Remove one login attempt
+                        Console.WriteLine($"\nWrong username or pincode.\nYou have {loginAttempts} attempts left!\nPress enter to continue");
                         Console.ReadLine();
                     }
                 }
-                else //Om användaren skriver in bokstäver i pinkoden
+                else //IF the user writes something else then numbers
                 {
-                    loginAttempts--; //Tar bort ett inloggningsförsök
-                    Console.WriteLine($"\nOjdå... Inloggningen misslyckades. Pinkod kan bara vara siffror.\nDu har {loginAttempts} försök kvar!\nTryck ENTER för att fortsätta");
+                    loginAttempts--; //Remove one login attempt
+                    Console.WriteLine($"\nUnsuccesfull login. The Pincode can only contain numbers.\nYou have {loginAttempts} attempts left!\nPress enter to continue");
                     Console.ReadLine();
                 }
             }
-            if (loginAttempts == 0) //Om inloggningsförsöken är slut
+            if (loginAttempts == 0) //IF the login attempts reaches 0
             {
-                User lockedUser = users.FirstOrDefault(u => u.UserName == enterName);
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Försök är slut! Programmet stängs ner...");
-                users.Remove(lockedUser);
-                Console.WriteLine("Användaren är nu låst. Kontakta systemadministratören för att låsa upp kontot.");
+                User lockedUser = users.FirstOrDefault(u => u.UserName == enterName);//Search for the username in the list.
+                Console.ForegroundColor = ConsoleColor.Red;//Change the text to red 
+                Console.WriteLine("No more tries...");
+                users.Remove(lockedUser);//Remove the user in then list so they cant login again.
+                Console.WriteLine("The user is now locked. Contact an Admin to solve the issue..");
             }
             return null;
         }
+        public void InternalTransfer()
+        {
+            foreach (var account in Accounts)
+            {
+                Console.WriteLine(account.AccountName);
+            }
+        }
+
+        public void ExternalTransfer()
+        {
+
+        }
+
+        public void LoanMoney()
+        {
+
+        }
     }
 
-        //public void InternalTransfer()
-        //{
-
-        //}
-
-        //public void ExternalTransfer()
-        //{
-
-        //}
     
-        //public void LoanMoney()
-        //{
-            
-        //}
 
-        
 
-    //}
+
+    
 }
