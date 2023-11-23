@@ -14,17 +14,18 @@ namespace Sharp_Shooters
         public User(string name, int pincode, List<Accounts> accounts)
         {
             UserName = name;
-            PinCode = pincode;            
+            PinCode = pincode;      
             Accounts = accounts;
         }
 
-        public void AccountOverview()
-        {
-            Console.WriteLine($"The bankaccounts for: {UserName}:");
-            
-            foreach (var account in Accounts)
+        public static void AccountOverview(User loggedInUser)
+        {            
+            Console.WriteLine($"The bankaccounts for: {loggedInUser.UserName.ToUpper()}:");
+            int accountNumber = 0;
+            foreach (var account in loggedInUser.Accounts)
             {
-                Console.WriteLine($"Account: {account.AccountName}\nBalance: {account.AccountBalance}");
+                accountNumber++;
+                Console.WriteLine($"Account {accountNumber}: {account.AccountName}\nBalance: {account.AccountBalance}");
             }
             
         }
@@ -60,7 +61,7 @@ namespace Sharp_Shooters
                     else //If the user enters the wrong credentials
                     {
                         loginAttempts--; //Remove one login attempt
-                        Console.WriteLine($"\nWrong username or pincode.\nYou have {loginAttempts} attempts left!\nPress enter to continue");
+                        Console.WriteLine($"\nWrong Credentials or you may have been blocked. \n If this problems continues, contact an administrator. \nYou have {loginAttempts} attempts left!\nPress enter to continue");
                         Console.ReadLine();
                     }
                 }
@@ -81,7 +82,7 @@ namespace Sharp_Shooters
             }
             return null;
         }
-        public void OpenNewAccount(User user)//Method to open a new account
+        public static void OpenNewAccount(User user)//Method to open a new account
         {
             Console.Clear();
             Console.Write("Name the account: ");
@@ -98,7 +99,7 @@ namespace Sharp_Shooters
                 Console.ReadLine();
             }
         }
-        public void OpenSavingsAccount(User user)//Method to open a savings account
+        public static void OpenSavingsAccount(User user)//Method to open a savings account
         {
             Console.Clear();
             Console.Write("Name the account: ");
@@ -118,22 +119,85 @@ namespace Sharp_Shooters
             }
         }
 
-        public void InternalTransfer()
+        public static void Transfer(User loggedInUser, List<User> users)
         {
-            foreach (var account in Accounts)
+            AccountOverview(loggedInUser);
+
+            Console.WriteLine("Which account do you want to transfer from?");
+            int.TryParse(Console.ReadLine(), out int fromAccountIndex);
+
+            if (fromAccountIndex < 1 || fromAccountIndex > loggedInUser.Accounts.Count)
             {
-                Console.WriteLine(account.AccountName);
+                Console.WriteLine("Choose a valid account number");
+                Console.ReadKey();
+                Console.WriteLine("Press Enter to continue");
+                return;
+            }
+
+            var sourceAccount = loggedInUser.Accounts[fromAccountIndex - 1];
+
+            Console.WriteLine($"Transfer from {sourceAccount.AccountName}\nBalance: {sourceAccount.AccountBalance}");
+
+            Console.WriteLine("Enter the username of the recipient:");//Lägg in alla användare
+            string recipientUsername = Console.ReadLine().ToLower();
+
+            var recipientUser = users.FirstOrDefault(u => u.UserName == recipientUsername);
+
+            if (recipientUser == null)
+            {
+                Console.WriteLine("Recipient not found. Please enter a valid username.");
+                Console.ReadKey();
+                Console.WriteLine("Press Enter to continue");
+                return;
+            }
+
+            AccountOverview(recipientUser);
+
+            Console.WriteLine("Which account do you want to transfer to?");
+            int.TryParse(Console.ReadLine(), out int toAccountIndex);
+
+            if (toAccountIndex < 1 || toAccountIndex > recipientUser.Accounts.Count)
+            {
+                Console.WriteLine("Choose a valid account number for the recipient");
+                Console.ReadKey();
+                Console.WriteLine("Press Enter to continue");
+                return;
+            }
+
+            var destinationAccount = recipientUser.Accounts[toAccountIndex - 1];
+
+            Console.WriteLine($"Transfer to {destinationAccount.AccountName}\nBalance: {destinationAccount.AccountBalance}");
+
+            Console.WriteLine("Enter the amount to transfer:");
+            if (int.TryParse(Console.ReadLine(), out int amount))
+            {
+                if (amount > 0 && amount <= sourceAccount.AccountBalance)
+                {
+                    sourceAccount.AccountBalance -= amount;
+                    destinationAccount.AccountBalance += amount;
+
+                    Console.WriteLine($"Transfer of {amount} to {recipientUser.UserName}'s {destinationAccount.AccountName} successful!");
+                    Console.ReadKey();
+                    Console.WriteLine("Press Enter to continue");
+                }
+                else
+                {
+                    Console.WriteLine("Invalid amount. Make sure it's a positive value and within your account balance.");
+                    Console.ReadKey();
+                    Console.WriteLine("Press Enter to continue");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Invalid input. Please enter a valid numeric amount.");
+                Console.ReadKey();
+                Console.WriteLine("Press Enter to continue");
             }
         }
 
-        public void ExternalTransfer()
+        public static void LoanMoney(List<User> users)
         {
-
-        }
-
-        public void LoanMoney()
-        {
-
+          
         }
     }
     
