@@ -31,15 +31,6 @@ namespace Sharp_Shooters
                 new Accounts("CS Inventory", 1000), //Dollar
                 new Accounts("Floorball", 50), 
             };
-            List<Accounts> AllAccounts = new List<Accounts>();
-            AllAccounts.Add(TheoAccounts[0]);
-            AllAccounts.Add(TheoAccounts[1]);
-            AllAccounts.Add(EddieAccounts[0]);
-            AllAccounts.Add(EddieAccounts[1]);
-            AllAccounts.Add(TorBjornAccounts[0]);
-            AllAccounts.Add(TorBjornAccounts[1]);
-            AllAccounts.Add(SimonAccounts[0]);
-            AllAccounts.Add(SimonAccounts[1]);
 
             List<User> users = new List<User> //List of users
             {
@@ -49,20 +40,17 @@ namespace Sharp_Shooters
                 new User("simon", 4444, SimonAccounts)
 
             };
+            Admin admin = new Admin();
             
             return users;
         }
         
-        
-
         public void CreateUser()
         {
             Console.WriteLine("===== Create a new user =====\n" +
                 "What is the name of the user?");
             string name = Console.ReadLine();
             Console.WriteLine("what pincode should the user have?");
-            int pincode = Convert.ToInt32(Console.ReadLine());
-            
 
         }
 
