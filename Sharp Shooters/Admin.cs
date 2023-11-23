@@ -8,19 +8,19 @@ namespace Sharp_Shooters
         {
             List<Accounts> TheoAccounts = new List<Accounts> //Lista med konton som tillhör användaren "Theo"
             {
-                new Accounts("Konto 1", 111111) //Skapar nytt objekt från Accounts-klassen
+                new Accounts("Account 1", 111111) //Skapar nytt objekt från Accounts-klassen
             };
             List<Accounts> EddieAccounts = new List<Accounts> //Lista med konton som tillhör användaren "Eddie"
             {
-                new Accounts("Konto 1", 111111) //Skapar nytt objekt från Accounts-klassen
+                new Accounts("Account 1", 111111) //Skapar nytt objekt från Accounts-klassen
             };
             List<Accounts> TorBjornAccounts = new List<Accounts> //Lista med konton som tillhör användaren "Torbjörn"
             {
-                new Accounts("Konto 1", 111111) //Skapar nytt objekt från Accounts-klassen
+                new Accounts("Account 1", 111111) //Skapar nytt objekt från Accounts-klassen
             };
             List<Accounts> SimonAccounts = new List<Accounts> //Lista med konton som tillhör användaren "Simon"
             {
-                new Accounts("Konto 1", 111111) //Skapar nytt objekt från Accounts-klassen
+                new Accounts("Account 1", 111111) //Skapar nytt objekt från Accounts-klassen
             };
 
             List<User> users = new List<User> //Lista med användare
@@ -31,21 +31,28 @@ namespace Sharp_Shooters
                 new User("simon", 4444, SimonAccounts)
 
             };
+            
+        }
+        
+        public void TranserTest()
+        {
+            
         }
 
         public void CreateUser()
         {
-            Console.WriteLine("===== Skapa en ny användare =====\n" +
-                "Vad ska användaren heta?");
+            Console.WriteLine("===== Create a new user =====\n" +
+                "What is the name of the user?");
             string name = Console.ReadLine();
-            Console.WriteLine("Vad ska användaren ha för pinkod?");
+            Console.WriteLine("what pincode should the user have?");
             int pincode = Convert.ToInt32(Console.ReadLine());
+            
 
         }
 
         public void UpdateCurrency()
         {
-
+            
         }
     }
 }
