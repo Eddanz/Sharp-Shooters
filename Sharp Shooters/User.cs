@@ -118,6 +118,76 @@ namespace Sharp_Shooters
                 Console.ReadLine();
             }
         }
+        public static void BorrowMoney(User user)
+        {
+            Console.Clear();
+
+            // Calculate the combined balance of all accounts
+            double combinedBalance = user.Accounts.Sum(account => account.AccountBalance);
+
+            // Maximum amount cannot be greater than half of the users total balance    
+            double maxBorrowAmount = combinedBalance * 0.5;
+            Console.WriteLine($"You can borrow up to {maxBorrowAmount:C}");
+            Console.Write("Enter the amount you want to borrow: ");
+            if (double.TryParse(Console.ReadLine(), out double borrowAmount))
+            {
+                if (borrowAmount <= 0)
+                {
+                    Console.WriteLine("The amount must be greater than 0!");
+                    Console.WriteLine("Please press Enter to continue");
+                    Console.ReadLine();
+                    return;
+                }
+
+                if (borrowAmount > maxBorrowAmount)
+                {
+                    Console.WriteLine($"You cannot borrow more than half of the combined balance of all your accounts ({maxBorrowAmount:C}).");
+                    Console.WriteLine("Please press Enter to continue");
+                    Console.ReadLine();
+                    return;
+                }
+
+                Console.WriteLine("Select the account where you want to add the borrowed amount:");
+
+                int accountNumber = 0;
+                foreach (var account in user.Accounts)
+                {
+                    accountNumber++;
+                    Console.WriteLine($"{accountNumber}. {account.AccountName} (Balance: {account.AccountBalance:C})");
+                }
+
+                Console.Write("Enter the number of the account: ");
+                if (int.TryParse(Console.ReadLine(), out int accountChoice))
+                {
+                    if (accountChoice >= 1 && accountChoice <= user.Accounts.Count)
+                    {
+                        user.Accounts[accountChoice - 1].AccountBalance += borrowAmount;
+                        Console.WriteLine($"You have borrowed {borrowAmount:C}. The amount has been added to your {user.Accounts[accountChoice - 1].AccountName} Account.");
+                        Console.WriteLine("Please press Enter to continue");
+                        Console.ReadLine();
+                        //Ränta 
+                    }
+                    else
+                    {
+                        Console.WriteLine("Invalid account choice.");
+                        Console.WriteLine("Please press Enter to continue");
+                        Console.ReadLine();
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Invalid input for the account number.");
+                    Console.WriteLine("Please press Enter to continue");
+                    Console.ReadLine();
+                }
+            }
+            else
+            {
+                Console.WriteLine("Invalid input for the borrowed amount. No money has been borrowed.");
+                Console.WriteLine("Please press Enter to continue");
+                Console.ReadLine();
+            }
+        }
 
         public static void Transfer(User loggedInUser, List<User> users)
         {

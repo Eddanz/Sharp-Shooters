@@ -69,6 +69,7 @@ namespace Sharp_Shooters
                         }
                         break;
                     case "2":
+                        User.BorrowMoney(loggedInUser);
                         //User.LoanMoney();
                         break;
                     case "3":
