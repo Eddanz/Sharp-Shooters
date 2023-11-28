@@ -4,18 +4,19 @@ namespace Sharp_Shooters
 {
     internal class User
     {
-        
-
         public string UserName {  get; set; }
         public int PinCode { get; set; }
         public List<Accounts> Accounts { get; set; }
 
+        public List<string> Transactions { get; set; }
+
         
-        public User(string name, int pincode, List<Accounts> accounts)
+        public User(string name, int pincode, List<Accounts> accounts, List <string> transactions)
         {
             UserName = name;
             PinCode = pincode;      
             Accounts = accounts;
+            Transactions = transactions;
         }
 
         public static void AccountOverview(User loggedInUser)
@@ -83,6 +84,7 @@ namespace Sharp_Shooters
 
         public static void OpenNewAccount(User user)//Method to open a new account
         {
+            string sign = "";
             string currency = "";
             Console.Clear();
             Console.WriteLine("What currency is the account?\n [1] (£) Euro\n [2] ($) Dollar\n [3] (SEK) Kronor");
@@ -91,12 +93,15 @@ namespace Sharp_Shooters
             {
                 case "1":
                     currency = "euro";
+                    sign = "£";
                     break;
                 case "2":
                     currency = "dollar";
+                    sign = "$";
                     break;
                 case "3":
                     currency = "kronor";
+                    sign = "SEK";
                     break;
                 default:
                     Console.WriteLine("You must choose 1-3!");
@@ -111,26 +116,46 @@ namespace Sharp_Shooters
                 Accounts newAccount = new Accounts(accountName, deposit, currency);
                 user.Accounts.Add(newAccount);
 
-                Console.WriteLine($"{accountName} has been created with a balance of {deposit:C}.");
+                Console.WriteLine($"{accountName} has been created with a balance of {sign} {deposit}.");
                 Console.WriteLine("Press Enter to Continue...");
                 Console.ReadLine();
             }
         }
         public static void OpenSavingsAccount(User user)//Method to open a savings account
         {
+            string currency = "";
+            string sign = "";
             Console.Clear();
-            Console.Write("Name the account: ");
+            Console.WriteLine("What currency is the account?\n [1] (£) Euro\n [2] ($) Dollar\n [3] (SEK) Kronor");
+            string CAnswer = Console.ReadLine();
+            switch (CAnswer)
+            {
+                case "1":
+                    currency = "EURO";
+                    sign = "£";
+                    break;
+                case "2":
+                    currency = "USD";
+                    sign = "$";
+                    break;
+                case "3":
+                    currency = "KRONOR";
+                    sign = "SEK";
+                    break;
+                default:
+                    Console.WriteLine("You must choose 1-3!");
+                    break;
+            }
             string accountName = "Savings Account";
             double interest = 0.035;
-            string currency = "";
             Console.Write($"Deposit Cashish in {accountName}: ");
             if (double.TryParse(Console.ReadLine(), out double deposit))
             {
                 Accounts newAccount = new Accounts(accountName, deposit, currency);
                 user.Accounts.Add(newAccount);
 
-                Console.WriteLine($"{accountName} has been created with a balance of {deposit:C}.");
-                Console.WriteLine($"The interest on your {accountName} will be: {deposit * interest:C}");
+                Console.WriteLine($"{accountName} has been created with a balance of {sign}: {deposit}.");
+                Console.WriteLine($"The interest on your {accountName} will be {sign}: {deposit * interest}");
                 Console.WriteLine("Press Enter to Continue...");
                 Console.ReadLine();
             }
@@ -153,7 +178,7 @@ namespace Sharp_Shooters
 
                 // Maximum amount cannot be greater than five times the users total balance.    
                 double maxBorrowAmount = combinedBalance * 5;
-                Console.WriteLine($"You can borrow up to {maxBorrowAmount:C}");
+                Console.WriteLine($"You can borrow up to {maxBorrowAmount}");
                 Console.WriteLine("Due to an exceedingly high policy rate, the interest rate is currently at 5 percent");
                 Console.Write("Enter the amount you want to borrow: ");
                 if (double.TryParse(Console.ReadLine(), out double borrowAmount))
@@ -168,7 +193,7 @@ namespace Sharp_Shooters
 
                     if (borrowAmount > maxBorrowAmount)
                     {
-                        Console.WriteLine($"You cannot borrow more than five times the combined balance of all your accounts ({maxBorrowAmount:C}).");
+                        Console.WriteLine($"You cannot borrow more than five times the combined balance of all your accounts ({maxBorrowAmount}).");
                         Console.WriteLine("Please press Enter to continue");
                         Console.ReadLine();
                         return;
@@ -180,7 +205,7 @@ namespace Sharp_Shooters
                     foreach (var account in user.Accounts)
                     {
                         accountNumber++;
-                        Console.WriteLine($"{accountNumber}. {account.AccountName} (Balance: {account.AccountBalance:C})");
+                        Console.WriteLine($"{accountNumber}. {account.AccountName} (Balance: {account.AccountBalance})");
                     }
 
                     Console.Write("Enter the number of the account: ");
@@ -190,7 +215,7 @@ namespace Sharp_Shooters
                         {
                             user.Accounts[accountChoice - 1].AccountBalance += borrowAmount;
                             LoanList.Add(user);//Adds the user to the list so they cant loan more than once.
-                            Console.WriteLine($"You have borrowed {borrowAmount:C}. The amount has been added to your {user.Accounts[accountChoice - 1].AccountName} Account.");
+                            Console.WriteLine($"You have borrowed {borrowAmount}. The amount has been added to your {user.Accounts[accountChoice - 1].AccountName} Account.");
                             Console.WriteLine($"The interest rate on your loan will be {borrowAmount * 0.05}. Interest payments will begin next month.");
                             Console.WriteLine("Please press Enter to continue");
                             Console.ReadLine();
@@ -217,19 +242,10 @@ namespace Sharp_Shooters
                 }
             }
         }
-        //public static void TransactionHistory(User loggedInUser, List<string> transactionList) 
-        //{
-        //    Console.WriteLine($"Transaction history for {loggedInUser.UserName.ToUpper()}:");
-        //    foreach (var transaction in transactionList)
-        //    {
-        //        Console.WriteLine(transaction);
-        //    }
-        //    Console.ReadLine();
-        //}
-        
+             
         public static void Transfer(User loggedInUser, List<User> users)
         {
-            List<string> transactionList = new List<string>();
+            
             Console.WriteLine("[1] New transfer\n[2] Transfer history");
             string input = Console.ReadLine();
 
@@ -290,17 +306,19 @@ namespace Sharp_Shooters
                     Console.WriteLine($"Transfer to {destinationAccount.AccountName}\nBalance: {destinationAccount.AccountBalance}");
 
                     Console.WriteLine("Enter the amount to transfer:");
-                    if (int.TryParse(Console.ReadLine(), out int amount))
+                    if (double.TryParse(Console.ReadLine(), out double amount))
                     {
                         if (amount > 0 && amount <= sourceAccount.AccountBalance)
                         {
+                            double convertedAmount = Currency.ConvertCurrency(amount, sourceAccount, destinationAccount);
                             sourceAccount.AccountBalance -= amount;
-                            destinationAccount.AccountBalance += amount;
+                            destinationAccount.AccountBalance += convertedAmount;
 
                             DateTime date = DateTime.Now;
-                            Console.WriteLine($"Transfer of {amount} to {recipientUser.UserName}'s {destinationAccount.AccountName} successful!");
+                            Console.WriteLine($"Transfer of {amount} to {recipientUser.UserName}'s {destinationAccount.AccountName} successful!");                            
+
                             string transaction = $"Transfer of {amount} to {recipientUser.UserName}'s {destinationAccount.AccountName} Date: {date}";
-                            transactionList.Add(transaction);
+                            loggedInUser.Transactions.Add(transaction);
                             Console.WriteLine("Press Enter to continue");
                             Console.ReadKey();
                         }
@@ -319,16 +337,12 @@ namespace Sharp_Shooters
                     }
                     break;
                 case "2":
-                    Console.WriteLine($"Transaction history for {loggedInUser.UserName.ToUpper()}:");
-                    //foreach (var transaction in transactionList.)
-                    for (int i = 0; i < transactionList.Count; i++)
+                    Console.WriteLine($"Transaction history for {loggedInUser.UserName.ToUpper()}:");                    
+                    foreach (var transaction in loggedInUser.Transactions)
                     {
-                        Console.WriteLine(i);
-                        Console.WriteLine("TEST");
-
+                        Console.WriteLine(transaction);
                     }
                     Console.ReadLine();
-
                     break;
             }
             

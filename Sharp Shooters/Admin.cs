@@ -18,39 +18,44 @@ namespace Sharp_Shooters
         {
             List<Accounts> TheoAccounts = new List<Accounts> //List with accounts belonging to user: "Theo"
             {
-                new Accounts("Salary £: ", 10000, "euro"), //Creates a new account from the Accounts Class
-                new Accounts("Savings $: ", 1337, "dollar"), //Dollar
-                new Accounts("Muay Thai SEK: ", 5, "kronor")
+                new Accounts("Salary £: ", 10000, "EURO"), //Creates a new account from the Accounts Class
+                new Accounts("Savings $: ", 1337, "USD"), 
+                new Accounts("Muay Thai SEK: ", 5, "KRONOR")
             };
-
+           
             List<Accounts> EddieAccounts = new List<Accounts> //List with accounts belonging to user:"Eddie"
             {
-                new Accounts("Salary £: ", 111111, "euro"),
-                new Accounts("Savings $: ", 20, "dollar"),
-                new Accounts("CS Skins SEK: ", 15000, "kronor")
+                new Accounts("Salary £: ", 111111, "EURO"),
+                new Accounts("Savings $: ", 20, "USD"),
+                new Accounts("CS Skins SEK: ", 15000, "KRONOR")
             };
-
+            
             List<Accounts> TorBjornAccounts = new List<Accounts> //List with accounts belonging to user: "Torbjörn"
             {
-                new Accounts("Salary £: ", 111111, "euro"), 
-                new Accounts("Savings $: ", 500, "dollar"),
-                new Accounts("Snus SEK: ", 2050, "kronor")
+                new Accounts("Salary £: ", 111111, "EURO"), 
+                new Accounts("Savings $: ", 500, "USD"),
+                new Accounts("Snus SEK: ", 2050, "KRONOR")
             };
-
+            
             List<Accounts> SimonAccounts = new List<Accounts> //List with accounts belonging to user: "Simon"
             {
-                new Accounts("Salary £: ", 111111, "euro"), 
-                new Accounts("Savings $: ", 67000, "dollar"), 
-                new Accounts("CS Inventory SEK: ", 1000, "kronor"),
-                new Accounts("Floorball SEK: ", 50, "kronor"), 
+                new Accounts("Salary £: ", 111111, "EURO"), 
+                new Accounts("Savings $: ", 67000, "USD"), 
+                new Accounts("CS Inventory SEK: ", 1000, "KRONOR"),
+                new Accounts("Floorball SEK: ", 50, "KRONOR"), 
             };
+
+            List<string> SimonTransactions = new List<string>();
+            List<string> TorBjornTransactions = new List<string>();
+            List<string> EddieTransactions = new List<string>();
+            List<string> TheoTransactions = new List<string>();
 
             List<User> users = new List<User> //List of users
             {
-                new User("theo", 1111, TheoAccounts), //Created new objects from the user-class
-                new User("eddie", 2222, EddieAccounts),
-                new User("tor bjorn", 3333 , TorBjornAccounts),
-                new User("simon", 4444, SimonAccounts)
+                new User("theo", 1111, TheoAccounts, TheoTransactions), //Created new objects from the user-class
+                new User("eddie", 2222, EddieAccounts, EddieTransactions),
+                new User("tor bjorn", 3333 , TorBjornAccounts, TorBjornTransactions),
+                new User("simon", 4444, SimonAccounts, SimonTransactions)
 
             };
 
@@ -127,41 +132,12 @@ namespace Sharp_Shooters
             Console.WriteLine("What pincode should the user have?");
             int.TryParse(Console.ReadLine(), out int pincode);
             List<Accounts> accountName = new List<Accounts>();
-            User user = new User(name, pincode, accountName);
+            List<string> transactionName = new List<string>();
+            User user = new User(name, pincode, accountName, transactionName);
             users.Add(user);
         }
 
-        public static void UpdateCurrency()
-        {
-            Console.Clear();
-            double DollarCur = 0.1;
-            double EuroCur = 0.091;
-            double SekCur = 1;
-            Console.WriteLine("Update currency \n [1] (£) Euro \n [2] ($) Dollar \n [3] (SEK) Kronor");
-            var CAnswer = Console.ReadLine();
-            switch (CAnswer)
-            {
-                case "1":
-                    Console.WriteLine("What is the current exchange rate for (£) Euro?");
-
-                    double.TryParse(Console.ReadLine(),out EuroCur);
-                    break;
-                case "2":
-                    Console.WriteLine("What is the current exchange rate for (£) Euro?");
-
-                    double.TryParse(Console.ReadLine(), out DollarCur);
-                    break;
-                case "3":
-                    Console.WriteLine("What is the current exchange rate for (£) Euro?");
-
-                    double.TryParse(Console.ReadLine(), out SekCur);
-                    break;
-                default:
-                    Console.WriteLine("You must choose 1-3!");
-                    break;
-            }
-        }
-
+        
         public static void AdminMenu(Admin loggedInAdmin, List<User> users)
         {
             Console.Clear();
@@ -178,7 +154,7 @@ namespace Sharp_Shooters
                     CreateUser(users);
                     break;
                 case "2":
-                    UpdateCurrency();
+                    //UpdateCurrency();
                     break;
                 case "3":
                     Console.Clear();

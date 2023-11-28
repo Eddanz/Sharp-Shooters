@@ -93,9 +93,6 @@ namespace Sharp_Shooters
         {
             List<User> users = Admin.InitializeUser();
             List<Admin> admins = Admin.InitializeAdmin();
-            double DollarCur = 0.1;
-            double EuroCur = 0.091;
-            double SekCur = 1;
             while (true)
             {
                 WelcomeMenu();
