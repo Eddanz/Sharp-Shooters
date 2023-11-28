@@ -10,11 +10,13 @@ namespace Sharp_Shooters
     {
         public string AccountName { get; set; }
         public double AccountBalance { get; set; }
+        public string Currency {  get; set; }
 
-        public Accounts(string accountName, double accountBalance)
+        public Accounts(string accountName, double accountBalance, string currency)
         {
             AccountName = accountName;
             AccountBalance = accountBalance;
+            Currency = currency;
         }
         
     }

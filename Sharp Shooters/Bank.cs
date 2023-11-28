@@ -4,7 +4,7 @@ namespace Sharp_Shooters
 {
     internal class Bank
     {
-        static void WelcomeMenu()
+        public static void WelcomeMenu()
         {
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.White;
@@ -15,7 +15,7 @@ namespace Sharp_Shooters
             Console.ReadKey();
         }
 
-        static void MainMenu(User loggedInUser, List<User> users)
+        public static void MainMenu(User loggedInUser, List<User> users)
         {
             while (true)
             {
@@ -35,7 +35,7 @@ namespace Sharp_Shooters
                         Console.Clear();
                         User.AccountOverview(loggedInUser);
                         Console.WriteLine("\n[1] Open a new account" +
-                            "\n[2] Go back to main menu");
+                             "\n[2] Go back to main menu");
                         string userChoise1 = Console.ReadLine();
                         switch (userChoise1)
                         {
@@ -60,17 +60,16 @@ namespace Sharp_Shooters
                                 }
                                 break;
                             case "2":
-                                break;
+                                break;                            
                             default:
                                 Console.Clear();
-                                Console.WriteLine("\nChoose between 1-2!");
+                                Console.WriteLine("\nChoose between 1-3!");
                                 Thread.Sleep(2000);
                                 break;
                         }
                         break;
                     case "2":
-                        User.BorrowMoney(loggedInUser);
-                        //User.LoanMoney();
+                        User.BorrowMoney(loggedInUser);                       
                         break;
                     case "3":
                         Console.Clear();
@@ -93,13 +92,33 @@ namespace Sharp_Shooters
         public static void Run()
         {
             List<User> users = Admin.InitializeUser();
+            List<Admin> admins = Admin.InitializeAdmin();
+            double DollarCur = 0.1;
+            double EuroCur = 0.091;
+            double SekCur = 1;
             while (true)
             {
                 WelcomeMenu();
-                User loggedInUser = User.LogIn(users);
-                if (loggedInUser != null)
+                Console.WriteLine("\nAre you User or Admin?" +
+                    "\n\n[1] User" +
+                    "\n[2] Admin");
+                string choise = Console.ReadLine();
+                switch (choise)
                 {
-                    MainMenu(loggedInUser, users);
+                    case "1":
+                        User loggedInUser = User.LogIn(users);
+                        if (loggedInUser != null)
+                        {
+                            MainMenu(loggedInUser, users);
+                        }
+                        break;
+                    case "2":
+                        Admin loggedInAdmin = Admin.LogIn(admins);
+                        if (loggedInAdmin != null)
+                        {
+                            Admin.AdminMenu(loggedInAdmin, users);
+                        }
+                        break;
                 }
             }
         }
