@@ -6,7 +6,7 @@ namespace Sharp_Shooters
         private static double _usdEurCur = 0.93;
         private static double _usdKronorCur = 10.86;
         private static double _eurUsdCur = 1.07;
-        private static double _eurKronorDCur = 11.68;
+        private static double _eurKronorCur = 11.68;
         private static double _kronorUsdCur = 0.1;
         private static double _kronorEurCur = 0.091;
         public static List<User> LoanList = new List<User>(); //This list regulates so the user can only make a loan once.
@@ -46,16 +46,16 @@ namespace Sharp_Shooters
                 _eurUsdCur = value;
             }
         }
-        public static double EURKRONORDCUR // Euro to Kronor
+        public static double EURKRONORCUR // Euro to Kronor
         {
             get
             {
-                return _eurKronorDCur;
+                return _eurKronorCur;
             }
             set
             {
 
-                _eurKronorDCur = value;
+                _eurKronorCur = value;
             }
         }
         public static double KRONORUSDCUR //Kronor to USD Dollar
@@ -108,9 +108,8 @@ namespace Sharp_Shooters
                             returnCurrency = EURUSDCUR;
                             return returnCurrency;
                         case "KRONOR":
-                            returnCurrency = EURKRONORDCUR;
+                            returnCurrency = EURKRONORCUR;
                             return returnCurrency;
-
                     }
                     break;
                 case "KRONOR":
@@ -122,7 +121,6 @@ namespace Sharp_Shooters
                         case "EURO":
                             returnCurrency = KRONOREURCUR;
                             return returnCurrency;
-
                     }
                     break;
                 default: 
@@ -189,7 +187,7 @@ namespace Sharp_Shooters
                         EURUSDCUR = Convert.ToDouble(Console.ReadLine());
 
                         Console.WriteLine("Update EURO to KRONOR: ");
-                        EURKRONORDCUR = Convert.ToDouble(Console.ReadLine());
+                        EURKRONORCUR = Convert.ToDouble(Console.ReadLine());
 
                         Console.WriteLine("Update KRONOR to USD: ");
                         KRONORUSDCUR = Convert.ToDouble(Console.ReadLine());
@@ -215,7 +213,7 @@ namespace Sharp_Shooters
             // Calculate the combined balance of all accounts
             if (LoanList.Contains(user))//If the list contains the user it sends them back to the mainmenu.
             {
-                Console.WriteLine("You have already made a loan! PAY IT OFF");
+                Console.WriteLine("\nYou have already made a loan! PAY IT OFF");
                 Utility.UniqueReadKeyMeth();
 
             }
@@ -226,7 +224,7 @@ namespace Sharp_Shooters
 
                 // Maximum amount cannot be greater than five times the users total balance.    
                 double maxBorrowAmount = combinedBalance * 5;
-                Console.WriteLine($"You can borrow up to {maxBorrowAmount:C}");
+                Console.WriteLine($"\nYou can borrow up to {maxBorrowAmount:C}");
                 Console.WriteLine("Due to an exceedingly high policy rate, the interest rate is currently at 5 percent");
                 Console.Write("Enter the amount you want to borrow: ");
                 if (double.TryParse(Console.ReadLine(), out double borrowAmount))
@@ -236,14 +234,12 @@ namespace Sharp_Shooters
                         Console.WriteLine("The amount must be greater than 0!");
                         Utility.UniqueReadKeyMeth();
                     }
-
                     if (borrowAmount > maxBorrowAmount)//Error handling
                     {
                         Console.WriteLine($"You cannot borrow more than five times the combined balance of all your accounts ({maxBorrowAmount:C}).");
                         Utility.UniqueReadKeyMeth();
                         return;
                     }
-                    
                     Accounts loan = new Accounts("Loan", borrowAmount, "KRONOR", "SEK");
                     user.Accounts.Add(loan);
                     LoanList.Add(user);//Adds the user to the list so they cant loan more than once.
