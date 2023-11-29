@@ -15,31 +15,31 @@ namespace Sharp_Shooters
         {
             List<Accounts> TheoAccounts = new List<Accounts> //List with accounts belonging to user: "Theo"
             {
-                new Accounts("Salary: ", 10000, "EURO", "£"), //Creates a new account from the Accounts Class
-                new Accounts("Savings: ", 1337, "USD", "$"), 
-                new Accounts("Muay Thai: ", 5, "KRONOR", "SEK")
+                new Accounts("Salary:", 10000, "EURO", "£"), //Creates a new account from the Accounts Class
+                new Accounts("Savings:", 1337, "USD", "$"), 
+                new Accounts("Muay Thai:", 5, "KRONOR", "SEK")
             };
            
             List<Accounts> EddieAccounts = new List<Accounts> //List with accounts belonging to user:"Eddie"
             {
-                new Accounts("Salary: ", 111111, "EURO", "£"),
-                new Accounts("Savings: ", 20, "USD", "$"),
-                new Accounts("CS Skins: ", 15000, "KRONOR", "SEK")
+                new Accounts("Salary:", 111111, "EURO", "£"),
+                new Accounts("Savings:", 20, "USD", "$"),
+                new Accounts("CS Skins:", 15000, "KRONOR", "SEK")
             };
             
             List<Accounts> TorBjornAccounts = new List<Accounts> //List with accounts belonging to user: "Torbjörn"
             {
-                new Accounts("Salary: ", 111111, "EURO", "£"), 
-                new Accounts("Savings: ", 500, "USD", "$"),
-                new Accounts("Snus: ", 2050, "KRONOR", "SEK")
+                new Accounts("Salary:", 111111, "EURO", "£"), 
+                new Accounts("Savings:", 500, "USD", "$"),
+                new Accounts("Snus:", 2050, "KRONOR", "SEK")
             };
             
             List<Accounts> SimonAccounts = new List<Accounts> //List with accounts belonging to user: "Simon"
             {
-                new Accounts("Salary: ", 111111, "EURO", "£"), 
-                new Accounts("Savings: ", 67000, "USD", "$"), 
-                new Accounts("CS Inventory: ", 1000, "KRONOR", "SEK"),
-                new Accounts("Floorball: ", 50, "KRONOR", "SEK"), 
+                new Accounts("Salary:", 111111, "EURO", "£"), 
+                new Accounts("Savings:", 67000, "USD", "$"), 
+                new Accounts("CS Inventory:", 1000, "KRONOR", "SEK"),
+                new Accounts("Floorball:", 50, "KRONOR", "SEK"), 
             };
 
             List<string> SimonTransactions = new List<string>();
