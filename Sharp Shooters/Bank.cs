@@ -7,11 +7,32 @@ namespace Sharp_Shooters
         {
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine("\n         Welcome to SharpShooter Bank");
-            Console.WriteLine("         ----------------------------");
-            Console.WriteLine("                 _ _.-'`-._ _\r\n                ;.'________'.;\r\n     _________n.[____________].n_________\r\n    |\"\"_\"\"_\"\"_\"\"||==||==||==||\"\"_\"\"_\"\"_\"\"]\r\n    |\"\"\"\"\"\"\"\"\"\"\"||..||..||..||\"\"\"\"\"\"\"\"\"\"\"|\r\n    |LI LI LI LI||LI||LI||LI||LI LI LI LI|\r\n    |.. .. .. ..||..||..||..||.. .. .. ..|\r\n    |LI LI LI LI||LI||LI||LI||LI LI LI LI|\r\n ,,;;,;;;,;;;,;;;,;;;,;;;,;;;,;;,;;;,;;;,;;,,\r\n;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;");
+            Console.WriteLine("\n         Welcome to SharpShooter Bank" +
+            "\n         ----------------------------" +
+            "\n                 _ _.-'`-._ _\r\n                ;.'________'.;\r\n     _________n.[____________].n_________\r\n    |\"\"_\"\"_\"\"_\"\"||==||==||==||\"\"_\"\"_\"\"_\"\"]\r\n    |\"\"\"\"\"\"\"\"\"\"\"||..||..||..||\"\"\"\"\"\"\"\"\"\"\"|\r\n    |LI LI LI LI||LI||LI||LI||LI LI LI LI|\r\n    |.. .. .. ..||..||..||..||.. .. .. ..|\r\n    |LI LI LI LI||LI||LI||LI||LI LI LI LI|\r\n ,,;;,;;;,;;;,;;;,;;;,;;;,;;;,;;,;;;,;;;,;;,,\r\n;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;");
+            DailyMessage();
             Console.WriteLine("\nPress Enter to Log in!");
             Console.ReadKey();
+        }
+
+        public static void DailyMessage() 
+        { 
+            Random random = new Random();
+            List<string> messages = new List<string>
+            {
+                "\nThe only bank you need in your life!",
+                "\nExpertise you need. Service you deserve!",
+                "\nWe Built This Bank For You!",
+                "\nYour First Choice!",
+                "\nWe know money!",
+                "\nBanking for people with better things to do!",
+                "\nBecause life’s complicated enough!",
+                "\nMake Dreams Happen!",
+                "\nYour First Choice!",
+                "\nBanking Focused on You!"
+            };
+            string randomMessage = messages[random.Next(messages.Count)];
+            Console.WriteLine(randomMessage);
         }
 
         public static void MainMenu(User loggedInUser, List<User> users) //Overloading the method with the loggedin user and the list of all of the users created.
