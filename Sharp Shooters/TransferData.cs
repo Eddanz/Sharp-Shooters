@@ -48,7 +48,7 @@ namespace Sharp_Shooters
                         Console.WriteLine(user.UserName.ToUpper());
                     }
 
-                    Console.WriteLine("Enter the username of the recipient:");
+                    Console.WriteLine("\nEnter the username of the recipient:");
                     string recipientUsername = Console.ReadLine().ToLower();
 
                     var recipientUser = users.FirstOrDefault(u => u.UserName == recipientUsername); //FirstOrDefault and lambda to search for the user.
@@ -59,7 +59,7 @@ namespace Sharp_Shooters
                         return;
                     }
 
-                    Accounts.AccountOverview(recipientUser); //Shows all of the accounts of the recipiant user.
+                    Accounts.AccountOverview(recipientUser); //Shows all of the accounts of the recipient user.
 
                     Console.WriteLine("Which account do you want to transfer to?");
                     int.TryParse(Console.ReadLine(), out int toAccountIndex);
@@ -94,12 +94,13 @@ namespace Sharp_Shooters
                     }
                     break;
                 case "2":
-                    Console.WriteLine($"Transaction history for {loggedInUser.UserName.ToUpper()}:"); // Present all of the transactions for the logged in user.
-                    foreach (var transaction in loggedInUser.Transactions)
-                    {
-                        Console.WriteLine(transaction);
-                    }
-                    Console.ReadLine();
+                    TransactionHistory(loggedInUser);
+                    //Console.WriteLine($"Transaction history for {loggedInUser.UserName.ToUpper()}:"); // Present all of the transactions for the logged in user.
+                    //foreach (var transaction in loggedInUser.Transactions)
+                    //{
+                    //    Console.WriteLine(transaction);
+                    //}
+                    //Console.ReadLine();
                     break;
             }
         }
@@ -115,6 +116,16 @@ namespace Sharp_Shooters
                 string transaction = $"Transfer of {transferData.Amount} to {transferData.RecipientUser.UserName}'s {transferData.DestinationAccount.AccountName} Date: {date}";
                 transferData.LoggedInUser.Transactions.Add(transaction);
             }
+        }
+
+        private static void TransactionHistory(User loggedInUser)
+        {
+            Console.WriteLine($"Transaction history for {loggedInUser.UserName.ToUpper()}:"); // Present all of the transactions for the logged in user.
+            foreach (var transaction in loggedInUser.Transactions)
+            {
+                Console.WriteLine(transaction);
+            }
+            Console.ReadLine();            
         }
     }
 }
