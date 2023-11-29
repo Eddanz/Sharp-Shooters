@@ -28,7 +28,7 @@ namespace Sharp_Shooters
             }
         }
 
-        public static void OpenNewAccount(User user)//Method to open a new account.
+        public static void OpenNewAccount(User loggedInUser)//Method to open a new account.
         {
             string sign = "";
             string currency = "";
@@ -60,14 +60,14 @@ namespace Sharp_Shooters
             if (double.TryParse(Console.ReadLine(), out double deposit))
             {
                 Accounts newAccount = new Accounts(accountName, deposit, currency, sign);
-                user.Accounts.Add(newAccount);
+                loggedInUser.Accounts.Add(newAccount);
 
                 Console.WriteLine($"{accountName} has been created with a balance of {sign} {deposit}.");
                 Utility.UniqueReadKeyMeth();
             }
         }
 
-        public static void OpenSavingsAccount(User user)//Method to open a savings account
+        public static void OpenSavingsAccount(User loggedInUser)//Method to open a savings account
         {
             string currency = "";
             string sign = "";
@@ -98,7 +98,7 @@ namespace Sharp_Shooters
             if (double.TryParse(Console.ReadLine(), out double deposit))
             {
                 Accounts newAccount = new Accounts(accountName, deposit, currency, sign);
-                user.Accounts.Add(newAccount);
+                loggedInUser.Accounts.Add(newAccount);
 
                 Console.WriteLine($"{accountName} has been created with a balance of {sign}: {deposit}.");
                 Console.WriteLine($"The interest on your {accountName} will be {sign}: {deposit * interest}");

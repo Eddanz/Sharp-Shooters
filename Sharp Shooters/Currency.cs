@@ -206,12 +206,12 @@ namespace Sharp_Shooters
             }
         }
 
-        public static void BorrowMoney(User user, List<Accounts> accounts) //This method lets the take out a loan one time. The user can take a loan of maximum five times the value of all of their accounts.
+        public static void BorrowMoney(User loggedInUser, List<Accounts> accounts) //This method lets the take out a loan one time. The user can take a loan of maximum five times the value of all of their accounts.
         {
             Accounts SEK = new Accounts("SEK", 0, "KRONOR", "SEK");
             Console.Clear();
             // Calculate the combined balance of all accounts
-            if (LoanList.Contains(user))//If the list contains the user it sends them back to the mainmenu.
+            if (LoanList.Contains(loggedInUser))//If the list contains the user it sends them back to the mainmenu.
             {
                 Console.WriteLine("\nYou have already made a loan! PAY IT OFF");
                 Utility.UniqueReadKeyMeth();
@@ -241,8 +241,8 @@ namespace Sharp_Shooters
                         return;
                     }
                     Accounts loan = new Accounts("Loan", borrowAmount, "KRONOR", "SEK");
-                    user.Accounts.Add(loan);
-                    LoanList.Add(user);//Adds the user to the list so they cant loan more than once.
+                    loggedInUser.Accounts.Add(loan);
+                    LoanList.Add(loggedInUser);//Adds the user to the list so they cant loan more than once.
                     Console.WriteLine($"You have borrowed {borrowAmount:C}. The amount has been added to your new loan account.");
                     Console.WriteLine($"The interest rate on your loan will be {borrowAmount * 0.05:C}. Interest payments will begin next month.");
                     Utility.UniqueReadKeyMeth();
