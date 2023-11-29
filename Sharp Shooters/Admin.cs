@@ -1,48 +1,45 @@
 ﻿
-
-using System.Reflection.Metadata;
-
 namespace Sharp_Shooters
 {
-    internal class Admin
+    internal class Admin //We declare what an Admin is with the properties below.
     {
         public string UserName { get; set; }
         public int PinCode { get; set; }
 
-        public Admin(string username, int pincode)
+        public Admin(string username, int pincode) // Constructor for the Admin
         {
             UserName = username;
             PinCode = pincode;
         }
-        public static List<User> InitializeUser()
+        public static List<User> InitializeUser() //This mehtod creates all of the users and their accounts
         {
             List<Accounts> TheoAccounts = new List<Accounts> //List with accounts belonging to user: "Theo"
             {
-                new Accounts("Salary £: ", 10000, "EURO"), //Creates a new account from the Accounts Class
-                new Accounts("Savings $: ", 1337, "USD"), 
-                new Accounts("Muay Thai SEK: ", 5, "KRONOR")
+                new Accounts("Salary: ", 10000, "EURO", "£"), //Creates a new account from the Accounts Class
+                new Accounts("Savings: ", 1337, "USD", "$"), 
+                new Accounts("Muay Thai: ", 5, "KRONOR", "SEK")
             };
            
             List<Accounts> EddieAccounts = new List<Accounts> //List with accounts belonging to user:"Eddie"
             {
-                new Accounts("Salary £: ", 111111, "EURO"),
-                new Accounts("Savings $: ", 20, "USD"),
-                new Accounts("CS Skins SEK: ", 15000, "KRONOR")
+                new Accounts("Salary: ", 111111, "EURO", "£"),
+                new Accounts("Savings: ", 20, "USD", "$"),
+                new Accounts("CS Skins: ", 15000, "KRONOR", "SEK")
             };
             
             List<Accounts> TorBjornAccounts = new List<Accounts> //List with accounts belonging to user: "Torbjörn"
             {
-                new Accounts("Salary £: ", 111111, "EURO"), 
-                new Accounts("Savings $: ", 500, "USD"),
-                new Accounts("Snus SEK: ", 2050, "KRONOR")
+                new Accounts("Salary: ", 111111, "EURO", "£"), 
+                new Accounts("Savings: ", 500, "USD", "$"),
+                new Accounts("Snus: ", 2050, "KRONOR", "SEK")
             };
             
             List<Accounts> SimonAccounts = new List<Accounts> //List with accounts belonging to user: "Simon"
             {
-                new Accounts("Salary £: ", 111111, "EURO"), 
-                new Accounts("Savings $: ", 67000, "USD"), 
-                new Accounts("CS Inventory SEK: ", 1000, "KRONOR"),
-                new Accounts("Floorball SEK: ", 50, "KRONOR"), 
+                new Accounts("Salary: ", 111111, "EURO", "£"), 
+                new Accounts("Savings: ", 67000, "USD", "$"), 
+                new Accounts("CS Inventory: ", 1000, "KRONOR", "SEK"),
+                new Accounts("Floorball: ", 50, "KRONOR", "SEK"), 
             };
 
             List<string> SimonTransactions = new List<string>();
@@ -58,11 +55,10 @@ namespace Sharp_Shooters
                 new User("simon", 4444, SimonAccounts, SimonTransactions)
 
             };
-
             return users;
         }
 
-        public static List<Admin> InitializeAdmin()
+        public static List<Admin> InitializeAdmin() // This method creates the admin with the username and pincode
         {
             List<Admin> admins = new List<Admin>
             {
@@ -72,7 +68,7 @@ namespace Sharp_Shooters
             return admins;
         }
 
-        public static Admin LogIn(List<Admin> admins)
+        public static Admin LogIn(List<Admin> admins) 
         {
 
             string enterName = "";
@@ -123,7 +119,7 @@ namespace Sharp_Shooters
             return null;
         }
 
-        public static void CreateUser(List<User> users)
+        public static void CreateUser(List<User> users) //This methods lets the Admin create a new user
         {
             Console.Clear();
             Console.WriteLine("===== Create a new user =====\n" +
@@ -138,34 +134,37 @@ namespace Sharp_Shooters
         }
 
         
-        public static void AdminMenu(Admin loggedInAdmin, List<User> users)
+        public static void AdminMenu(Admin loggedInAdmin, List<User> users) // the admin does not have any accounts or transfer. The admin only has "Create new user" and "Update Currency"
         {
-            Console.Clear();
-            Console.Write($"\n===== You are logged in as: {loggedInAdmin.UserName.ToUpper()} =====" +
-                "\n[1] Create a new user" +
-                "\n[2] Update currency" +
-                "\n[3] Log out" +
-                "\nCHOISE:");
-
-            string adminChoise = Console.ReadLine();
-            switch (adminChoise)
+            while (true)
             {
-                case "1":
-                    CreateUser(users);
-                    break;
-                case "2":
-                    //UpdateCurrency();
-                    break;
-                case "3":
-                    Console.Clear();
-                    Console.WriteLine("You are now logged out...");
-                    Thread.Sleep(3000);
-                    return;
-                default:
-                    Console.Clear();
-                    Console.WriteLine("\nChoose between 1-3!");
-                    Thread.Sleep(2000);
-                    break;
+                Console.Clear();
+                Console.Write($"\n===== You are logged in as: {loggedInAdmin.UserName.ToUpper()} =====" +
+                    "\n[1] Create a new user" +
+                    "\n[2] Update currency" +
+                    "\n[3] Log out" +
+                    "\nCHOISE:");
+
+                string adminChoise = Console.ReadLine();
+                switch (adminChoise)
+                {
+                    case "1":
+                        CreateUser(users);
+                        break;
+                    case "2":
+                        Currency.UpdateCurrency();
+                        break;
+                    case "3":
+                        Console.Clear();
+                        Console.WriteLine("You are now logged out...");
+                        Thread.Sleep(3000);
+                        return;
+                    default:
+                        Console.Clear();
+                        Console.WriteLine("\nChoose between 1-3!");
+                        Thread.Sleep(2000);
+                        break;
+                }
             }
         }
     }

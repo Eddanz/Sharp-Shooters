@@ -1,5 +1,5 @@
-﻿namespace Sharp_Shooters
-    
+﻿
+namespace Sharp_Shooters
 {
     internal class Program
     {

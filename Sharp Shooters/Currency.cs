@@ -1,15 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Metadata;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Net.Mime.MediaTypeNames;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-
+﻿
 namespace Sharp_Shooters
 { 
-    internal static class Currency 
+    internal static class Currency //Here we declare the exchange rates for all of the conversions
     {
         private static double _usdEurCur = 0.93;
         private static double _usdKronorCur = 10.86;
@@ -17,6 +9,7 @@ namespace Sharp_Shooters
         private static double _eurKronorDCur = 11.68;
         private static double _kronorUsdCur = 0.1;
         private static double _kronorEurCur = 0.091;
+        public static List<User> LoanList = new List<User>(); //This list regulates so the user can only make a loan once.
 
         public static double USDEURCUR //USD Dollar to Euro
         {
@@ -90,7 +83,7 @@ namespace Sharp_Shooters
             }
         }
 
-        public static double GetExchangeRate(Accounts fromCurrency, Accounts toCurrency)
+        public static double GetExchangeRate(Accounts fromCurrency, Accounts toCurrency) //This method looks at what the currency of the account the user wants to send money from is and the at what the account the user want to send money to is.
         {
             
             double returnCurrency = 1.0;
@@ -137,9 +130,8 @@ namespace Sharp_Shooters
                     
             }
             return returnCurrency;
-
         }
-        public static double ConvertCurrency(double amount, Accounts fromCurrency, Accounts toCurrency)
+        public static double ConvertCurrency(double amount, Accounts fromCurrency, Accounts toCurrency) // this method converts the currencys of the diffrent accounts by using the method "GetExchangeRate"
         {
             if (fromCurrency.Currencys == toCurrency.Currencys)
             {
@@ -152,6 +144,119 @@ namespace Sharp_Shooters
                 double exchangeRate = GetExchangeRate(fromCurrency, toCurrency);
                 double convertedAmount = amount * exchangeRate;
                 return convertedAmount;
+            }
+        }
+
+        public static double ConvertCurrency(List<Accounts> accounts, Accounts toCurrency)
+        {
+            double totalAmount = 0;
+
+            foreach (var account in accounts) 
+            {
+                if (account.Currencys != toCurrency.Currencys)
+                {
+                    double exchangeRate = GetExchangeRate(account, toCurrency);
+                    double convertedAmount = account.AccountBalance * exchangeRate;
+                    totalAmount += convertedAmount;
+                }
+                else
+                {
+                    totalAmount += account.AccountBalance;
+                }
+            }
+
+            return totalAmount;
+        }
+
+        public static void UpdateCurrency() //The Admin can update the currencys to the daily rates.
+        {
+            Console.WriteLine("Welcome to the Currency updater 2.0" +
+                "\n\n[1] START" +
+                "\n[2] Back to Menu");
+            var MenuChoice = Console.ReadLine();
+            switch (MenuChoice)
+            {
+                case "1":
+                    try
+                    {
+                        Console.WriteLine("Update USD to EURO: ");
+                        USDEURCUR = Convert.ToDouble(Console.ReadLine());
+
+                        Console.WriteLine("Update USD to KRONOR: ");
+                        USDKRONORCUR = Convert.ToDouble(Console.ReadLine());
+
+                        Console.WriteLine("Update EURO to USD: ");
+                        EURUSDCUR = Convert.ToDouble(Console.ReadLine());
+
+                        Console.WriteLine("Update EURO to KRONOR: ");
+                        EURKRONORDCUR = Convert.ToDouble(Console.ReadLine());
+
+                        Console.WriteLine("Update KRONOR to USD: ");
+                        KRONORUSDCUR = Convert.ToDouble(Console.ReadLine());
+
+                        Console.WriteLine("Update KRONOR to EURO: ");
+                        KRONOREURCUR = Convert.ToDouble(Console.ReadLine());
+                    }
+                    catch
+                    {
+                        Console.WriteLine("The value must be in numbers");
+                    }
+                    break;
+                case "2":
+                    
+                    return;
+            }
+        }
+
+        public static void BorrowMoney(User user, List<Accounts> accounts) //This method lets the take out a loan one time. The user can take a loan of maximum five times the value of all of their accounts.
+        {
+            Accounts SEK = new Accounts("SEK", 0, "KRONOR", "SEK");
+            Console.Clear();
+            // Calculate the combined balance of all accounts
+            if (LoanList.Contains(user))//If the list contains the user it sends them back to the mainmenu.
+            {
+                Console.WriteLine("You have already made a loan! PAY IT OFF");
+                Utility.UniqueReadKeyMeth();
+
+            }
+            else
+            {
+                double combinedBalance = ConvertCurrency(accounts, SEK);
+                    //user.Accounts.Sum(account => account.AccountBalance);
+
+                // Maximum amount cannot be greater than five times the users total balance.    
+                double maxBorrowAmount = combinedBalance * 5;
+                Console.WriteLine($"You can borrow up to {maxBorrowAmount:C}");
+                Console.WriteLine("Due to an exceedingly high policy rate, the interest rate is currently at 5 percent");
+                Console.Write("Enter the amount you want to borrow: ");
+                if (double.TryParse(Console.ReadLine(), out double borrowAmount))
+                {
+                    if (borrowAmount <= 0) //Error handling
+                    {
+                        Console.WriteLine("The amount must be greater than 0!");
+                        Utility.UniqueReadKeyMeth();
+                    }
+
+                    if (borrowAmount > maxBorrowAmount)//Error handling
+                    {
+                        Console.WriteLine($"You cannot borrow more than five times the combined balance of all your accounts ({maxBorrowAmount:C}).");
+                        Utility.UniqueReadKeyMeth();
+                        return;
+                    }
+                    
+                    Accounts loan = new Accounts("Loan", borrowAmount, "KRONOR", "SEK");
+                    user.Accounts.Add(loan);
+                    LoanList.Add(user);//Adds the user to the list so they cant loan more than once.
+                    Console.WriteLine($"You have borrowed {borrowAmount:C}. The amount has been added to your new loan account.");
+                    Console.WriteLine($"The interest rate on your loan will be {borrowAmount * 0.05:C}. Interest payments will begin next month.");
+                    Utility.UniqueReadKeyMeth();
+                   
+                }
+                else
+                {
+                    Console.WriteLine("Invalid input for the borrowed amount. No money has been borrowed.");//Error handling
+                    Utility.UniqueReadKeyMeth();
+                }
             }
         }
     }
