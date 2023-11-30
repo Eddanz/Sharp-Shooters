@@ -24,7 +24,7 @@ namespace Sharp_Shooters
             foreach (var account in loggedInUser.Accounts) //Foreach loop that loops through the list of accounts for the user.
             {
                 accountNumber++;
-                Console.WriteLine($"Account {accountNumber}: {account.AccountName}\nBalance: {account.AccountBalance} {account.CurrencySymbol}\n");
+                Console.WriteLine($"Account {accountNumber}: {account.AccountName}\nBalance: {Math.Round(account.AccountBalance, 2)} {account.CurrencySymbol}\n");
             }
         }
         public static void OpenNewAccount(User loggedInUser)//Method to open a new account.
