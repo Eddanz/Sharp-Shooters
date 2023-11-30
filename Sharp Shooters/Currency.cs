@@ -224,9 +224,9 @@ namespace Sharp_Shooters
 
                 // Maximum amount cannot be greater than five times the users total balance.    
                 double maxBorrowAmount = combinedBalance * 5;
-                Console.WriteLine($"\nYou can borrow up to {maxBorrowAmount:C}");
-                Console.WriteLine("Due to an exceedingly high policy rate, the interest rate is currently at 5 percent");
-                Console.Write("Enter the amount you want to borrow: ");
+                Console.WriteLine($"\nYou can borrow up to {maxBorrowAmount:C}" +
+                "\nDue to an exceedingly high policy rate, the interest rate is currently at 5 percent" +
+                "\nEnter the amount you want to borrow: ");
                 if (double.TryParse(Console.ReadLine(), out double borrowAmount))
                 {
                     if (borrowAmount <= 0) //Error handling
@@ -243,8 +243,9 @@ namespace Sharp_Shooters
                     Accounts loan = new Accounts("Loan", borrowAmount, "KRONOR", "SEK");
                     loggedInUser.Accounts.Add(loan);
                     LoanList.Add(loggedInUser);//Adds the user to the list so they cant loan more than once.
-                    Console.WriteLine($"You have borrowed {borrowAmount:C}. The amount has been added to your new loan account.");
-                    Console.WriteLine($"The interest rate on your loan will be {borrowAmount * 0.05:C}. Interest payments will begin next month.");
+                    Console.Clear();
+                    Console.WriteLine($"\nYou have borrowed {borrowAmount:C}. The amount has been added to your new loan account." +
+                    $"\nThe interest rate on your loan will be {borrowAmount * 0.05:C}. Interest payments will begin next month.");
                     Utility.UniqueReadKeyMeth();
                    
                 }

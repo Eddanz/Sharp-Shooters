@@ -42,7 +42,7 @@ namespace Sharp_Shooters
                 new Accounts("Floorball:", 50, "KRONOR", "SEK"), 
             };
 
-            List<string> SimonTransactions = new List<string>();
+            List<string> SimonTransactions = new List<string>(); //List that saves all of the transactions made by the user.
             List<string> TorBjornTransactions = new List<string>();
             List<string> EddieTransactions = new List<string>();
             List<string> TheoTransactions = new List<string>();
@@ -51,7 +51,7 @@ namespace Sharp_Shooters
             {
                 new User("theo", 1111, TheoAccounts, TheoTransactions), //Created new objects from the user-class
                 new User("eddie", 2222, EddieAccounts, EddieTransactions),
-                new User("tor bjorn", 3333 , TorBjornAccounts, TorBjornTransactions),
+                new User("torbjorn", 3333 , TorBjornAccounts, TorBjornTransactions),
                 new User("simon", 4444, SimonAccounts, SimonTransactions)
 
             };
@@ -62,7 +62,7 @@ namespace Sharp_Shooters
         {
             List<Admin> admins = new List<Admin>
             {
-                new Admin("admin", 0000)
+                new Admin("admin", 1337)
             };
 
             return admins;
@@ -72,18 +72,18 @@ namespace Sharp_Shooters
         {
 
             string enterName = "";
-            int loginAttempts = 3; //The attempts the user has to login.
-            while (loginAttempts != 0) //While-loop that runs as long as the login attempts are not 0.
+            while (true) //While-loop that runs as long as the login attempts are not 0.
             {
                 Console.Clear();
                 Console.Write("Username: ");
                 enterName = Console.ReadLine().ToLower();
                 Console.Write("Pincode: ");
-                if (int.TryParse(Console.ReadLine(), out int enterPincode))
+                int enteredPincode = Utility.HidePincode();
+                if (enteredPincode != null)
                 {
                     //Using the FirstOfDeafult and Lambda expression it searches through the list of admins and looks for a matching username and pincode, Return the the admin as loggedInAdmin.
 
-                    Admin loggedInAdmin = admins.FirstOrDefault(a => a.UserName == enterName && a.PinCode == enterPincode);
+                    Admin loggedInAdmin = admins.FirstOrDefault(a => a.UserName == enterName && a.PinCode == enteredPincode);
 
                     if (loggedInAdmin != null) //If loggedInAdmin has returned a value
                     {
@@ -96,26 +96,18 @@ namespace Sharp_Shooters
                     }
                     else //If the user enters the wrong credentials
                     {
-                        loginAttempts--; //Remove one login attempt
-                        Console.WriteLine($"\nWrong Credentials or you may have been blocked. \n If this problems continues, contact an administrator. \nYou have {loginAttempts} attempts left!\nPress enter to continue");
+                        Console.WriteLine($"\nWrong Credentials \nPress enter to continue");
                         Console.ReadLine();
                     }
                 }
                 else //IF the admin writes something else then numbers
                 {
-                    loginAttempts--; //Remove one login attempt
-                    Console.WriteLine($"\nUnsuccesfull login. The Pincode can only contain numbers.\nYou have {loginAttempts} attempts left!\nPress enter to continue");
+                    
+                    Console.WriteLine($"\nUnsuccesfull login. The Pincode can only contain numbers.\nPress enter to continue");
                     Console.ReadLine();
                 }
             }
-            if (loginAttempts == 0) //IF the login attempts reaches 0
-            {
-                Admin lockedAdmin = admins.FirstOrDefault(u => u.UserName == enterName);//Search for the username in the list.
-                Console.ForegroundColor = ConsoleColor.Red;//Change the text to red 
-                Console.WriteLine("No more tries...");
-                admins.Remove(lockedAdmin);//Remove the admin in then list so they cant login again.
-                Console.WriteLine("The user is now locked. Contact an Admin to solve the issue..");
-            }
+            
             return null;
         }
 
@@ -140,10 +132,10 @@ namespace Sharp_Shooters
             {
                 Console.Clear();
                 Console.Write($"\n===== You are logged in as: {loggedInAdmin.UserName.ToUpper()} =====" +
-                    "\n[1] Create a new user" +
+                    "\n\n[1] Create a new user" +
                     "\n[2] Update currency" +
                     "\n[3] Log out" +
-                    "\nCHOISE:");
+                    "\n\nCHOISE:");
 
                 string adminChoise = Console.ReadLine();
                 switch (adminChoise)

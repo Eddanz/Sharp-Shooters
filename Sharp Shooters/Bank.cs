@@ -51,55 +51,67 @@ namespace Sharp_Shooters
                 switch (userChoise)
                 {
                     case "1": //Use the Account overview method to display all the accounts the user has.
-                        Console.Clear();
-                        Accounts.AccountOverview(loggedInUser);
-                        Console.WriteLine("\n[1] Open a new account" +
-                             "\n[2] Go back to main menu"); //If the user presses "2" they can open a new account using either the "OpenNewAccount" or "OpenSavingsAccount" method.
-                        string userChoise1 = Console.ReadLine();
-                        switch (userChoise1)
+                        bool valid = false;
+                        while (!valid)
                         {
-                            case "1": // The user can choose between opening a regular account or a savings account that has a rate of 3.5%.
-                                Console.Clear();
-                                Console.WriteLine("[1] Open a regular account" +
-                                    "\n[2] Open a savings account");
-                                string accountType = Console.ReadLine();
-                                switch (accountType)
-                                {
-                                    case "1":
-                                        Accounts.OpenNewAccount(loggedInUser);
-                                        break;
-                                    case "2":
-                                        Accounts.OpenSavingsAccount(loggedInUser);
-                                        break;
-                                    default:
-                                        Console.Clear();
-                                        Console.WriteLine("\nChoose between 1-2!");
-                                        Thread.Sleep(2000);
-                                        break;
-                                }
-                                break;
-                            case "2": //Pressing "2" returns the user to main menu.
-                                break;                            
-                            default: // error handling
-                                Console.Clear();
-                                Console.WriteLine("\nChoose between 1-3!");
-                                Thread.Sleep(2000);
-                                break;
+                            Console.Clear();
+                            Accounts.AccountOverview(loggedInUser);
+                            Console.WriteLine("[1] Open a new account" +
+                                 "\n[2] Go back to main menu"); //If the user presses "2" they can open a new account using either the "OpenNewAccount" or "OpenSavingsAccount" method.
+                            string userChoise1 = Console.ReadLine();
+                            switch (userChoise1)
+                            {
+                                case "1": // The user can choose between opening a regular account or a savings account that has a rate of 3.5%.
+                                    Console.Clear();
+                                    valid = true;
+                                    Console.WriteLine("\n[1] Open a regular account" +
+                                        "\n[2] Open a savings account");
+                                    string accountType = Console.ReadLine();
+                                    switch (accountType)
+                                    {
+                                        case "1":
+                                            Accounts.OpenNewAccount(loggedInUser);
+                                            break;
+
+                                        case "2":
+                                            Accounts.OpenSavingsAccount(loggedInUser);
+                                            break;
+
+                                        default:
+                                            Console.Clear();
+                                            Console.WriteLine("\nChoose between 1-2!");
+                                            Thread.Sleep(2000);
+                                            break;
+                                    }
+                                    break;
+                                case "2": //Pressing "2" returns the user to main menu.
+                                    valid = true;
+                                    break;
+
+                                default: // error handling
+                                    Console.WriteLine("\nChoose between 1-2!");
+                                    Thread.Sleep(2000);
+                                    break;
+                            }
                         }
                         break;
+
                     case "2": //The user can borrow money using the "BorrowMoney" method
                         Console.Clear();
                         Currency.BorrowMoney(loggedInUser, loggedInUser.Accounts);                       
                         break;
+
                     case "3": // The user can send money between accounts both to their own and to other users.
                         Console.Clear();
                         TransferData.Transfer(loggedInUser, users);
                         break;
+
                     case "4": //The user can log out and another user/admin can log in.
                         Console.Clear();
-                        Console.WriteLine("You are now logged out...");
+                        Console.WriteLine("\nYou are now logged out...");
                         Thread.Sleep(3000);
                         return;
+
                     default: // Error handling
                         Console.Clear();
                         Console.WriteLine("\nChoose between 1-4!");

@@ -21,7 +21,7 @@ namespace Sharp_Shooters
         public static void Transfer(User loggedInUser, List<User> users) //This method does the transfers.
         {
 
-            Console.WriteLine("[1] New transfer\n[2] Transfer history");
+            Console.WriteLine("\n[1] New transfer\n[2] Transfer history");
             string input = Console.ReadLine();
 
             switch (input)
@@ -43,8 +43,10 @@ namespace Sharp_Shooters
                 transferData.DestinationAccount.AccountBalance += convertedAmount;
 
                 DateTime date = DateTime.Now;
-                string transaction = $"Transfer of {transferData.Amount} to {transferData.RecipientUser.UserName}'s {transferData.DestinationAccount.AccountName} Date: {date}";
+                string transaction = $"Transfer of {transferData.Amount} {transferData.SourceAccount.Sign} to {transferData.RecipientUser.UserName.ToUpper()}'s {transferData.DestinationAccount.AccountName} Date: {date}";
+                string recipient = $"You recievied {transferData.Amount} {transferData.SourceAccount.Sign} to your {transferData.DestinationAccount.AccountName} from {transferData.LoggedInUser.UserName.ToUpper()} Date: {date}";
                 transferData.LoggedInUser.Transactions.Add(transaction);
+                transferData.RecipientUser.Transactions.Add(recipient);
             }
         }
 
@@ -64,8 +66,8 @@ namespace Sharp_Shooters
             var sourceAccount = loggedInUser.Accounts[fromAccountIndex - 1]; //Use - 1 of the index because the index starts at 0 but we present it from 1.
 
             Console.Clear();
-            Console.WriteLine($"Transfer from {sourceAccount.AccountName}\nBalance: {sourceAccount.AccountBalance}\n");
-            Console.WriteLine("Here are all the users in our system:");
+            Console.WriteLine($"\nTransfer from {sourceAccount.AccountName}\nBalance: {sourceAccount.AccountBalance} {sourceAccount.Sign}\n" +
+            "\nHere are all the users in our system:");
             foreach (var user in users) //List all of the users in the system.
             {
                 Console.WriteLine(user.UserName.ToUpper());
@@ -95,14 +97,14 @@ namespace Sharp_Shooters
 
             var destinationAccount = recipientUser.Accounts[toAccountIndex - 1];
 
-            Console.WriteLine($"\nTransfer to {destinationAccount.AccountName}\nBalance: {destinationAccount.AccountBalance}");
+            Console.WriteLine($"\nTransfer to {recipientUser.UserName.ToUpper()}'s {destinationAccount.AccountName}\nBalance on your account {sourceAccount.AccountName} {sourceAccount.AccountBalance} {sourceAccount.Sign}");
 
-            Console.WriteLine("Enter the amount to transfer:");
+            Console.Write("Enter the amount to transfer: ");
             if (double.TryParse(Console.ReadLine(), out double amount))
             {
                 if (amount > 0 && amount <= sourceAccount.AccountBalance)
                 {
-                    Timer transferTimer = new Timer(TransferCallback, new TransferData(loggedInUser, sourceAccount, recipientUser, destinationAccount, amount), 1 * 60 * 1000, Timeout.Infinite); //The transaction is scheduled 15 minutes forward in time.
+                    Timer transferTimer = new Timer(TransferCallback, new TransferData(loggedInUser, sourceAccount, recipientUser, destinationAccount, amount),  1 * 1000, Timeout.Infinite); //The transaction is scheduled 15 minutes forward in time.
                     Console.WriteLine($"\nTransfer of {amount} {sourceAccount.Sign} to {recipientUser.UserName}'s {destinationAccount.AccountName} scheduled in 15 minutes.\nPress Enter to continue");
                     Console.ReadKey();
                 }

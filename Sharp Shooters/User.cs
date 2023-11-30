@@ -3,22 +3,22 @@ namespace Sharp_Shooters
 {
     internal class User //Defines what a user is with the properties below.
     {
-        public string UserName {  get; set; }
+        public string UserName { get; set; }
         public int PinCode { get; set; }
         public List<Accounts> Accounts { get; set; }
         public List<string> Transactions { get; set; }
 
-        public User(string name, int pincode, List<Accounts> accounts, List <string> transactions) //Constructor for the users.
+        public User(string name, int pincode, List<Accounts> accounts, List<string> transactions) //Constructor for the users.
         {
             UserName = name;
-            PinCode = pincode;      
+            PinCode = pincode;
             Accounts = accounts;
             Transactions = transactions;
         }
 
         public static User LogIn(List<User> users)
         {
-            string enterName ="";
+            string enterName = "";
             int loginAttempts = 3; //The attempts the user has to login.
             while (loginAttempts != 0) //While-loop that runs as long as the login attempts are not 0.
             {
@@ -26,10 +26,12 @@ namespace Sharp_Shooters
                 Console.Write("\nUsername: ");
                 enterName = Console.ReadLine().ToLower();
                 Console.Write("Pincode: ");
-                if (int.TryParse(Console.ReadLine(), out int enterPincode))
+                int enteredPincode = Utility.HidePincode();
+
+                if (enteredPincode != null)
                 {
                     //Using the FirstOfDeafult and Lambda expression it searches through the list of users and looks for a matching username and pincode, Return the the user as loggedInUser.
-                    User loggedInUser = users.FirstOrDefault(u => u.UserName == enterName && u.PinCode == enterPincode);
+                    User loggedInUser = users.FirstOrDefault(u => u.UserName == enterName && u.PinCode == enteredPincode);
 
                     if (loggedInUser != null) //If loggedInUser has returned a value
                     {
@@ -38,12 +40,12 @@ namespace Sharp_Shooters
                             $"\nPlease wait while the information is retrived...");
                         Thread.Sleep(2000);
                         return loggedInUser; //Returns the loggedInUser
-                        
+
                     }
                     else //If the user enters the wrong credentials
                     {
                         loginAttempts--; //Remove one login attempt
-                        Console.WriteLine($"\nWrong Credentials or you may have been blocked. \n If this problems continues, contact an administrator. \nYou have {loginAttempts} attempts left!\nPress enter to continue");
+                        Console.WriteLine($"\nWrong Credentials or you may have been blocked. \nIf this problems continues, contact an administrator. \nYou have {loginAttempts} attempts left!\nPress enter to continue");
                         Console.ReadLine();
                     }
                 }
@@ -66,3 +68,4 @@ namespace Sharp_Shooters
         }
     }
 }
+
