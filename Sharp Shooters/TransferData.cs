@@ -43,30 +43,34 @@ namespace Sharp_Shooters
                 transferData.DestinationAccount.AccountBalance += convertedAmount;
 
                 DateTime date = DateTime.Now;
-                string transaction = $"Transfer of {transferData.Amount} {transferData.SourceAccount.Sign} to {transferData.RecipientUser.UserName.ToUpper()}'s {transferData.DestinationAccount.AccountName} Date: {date}";
-                string recipient = $"You recievied {transferData.Amount} {transferData.SourceAccount.Sign} to your {transferData.DestinationAccount.AccountName} from {transferData.LoggedInUser.UserName.ToUpper()} Date: {date}";
+                string transaction = $"Transfer of {transferData.Amount} {transferData.SourceAccount.CurrencySymbol} to {transferData.RecipientUser.UserName.ToUpper()}'s {transferData.DestinationAccount.AccountName} Date: {date}";
+                string recipient = $"You received {transferData.Amount} {transferData.SourceAccount.CurrencySymbol} to your {transferData.DestinationAccount.AccountName} from {transferData.LoggedInUser.UserName.ToUpper()} Date: {date}";
                 transferData.LoggedInUser.Transactions.Add(transaction);
-                transferData.RecipientUser.Transactions.Add(recipient);
+                if (transferData.LoggedInUser.UserName != transferData.RecipientUser.UserName)
+                {
+                    transferData.RecipientUser.Transactions.Add(recipient);
+                }
+                
             }
         }
 
         private static void NewTransfer(User loggedInUser, List<User> users)
         {
-            Accounts.AccountOverview(loggedInUser); //When we initialize a new transfer we first list the avaliable accounts for the logged in user.
+            Accounts.AccountOverview(loggedInUser); //When we initialize a new transfer we first list the available accounts for the logged in user.
 
             Console.WriteLine("Which account do you want to transfer from?");
             int.TryParse(Console.ReadLine(), out int fromAccountIndex);
 
             if (fromAccountIndex < 1 || fromAccountIndex > loggedInUser.Accounts.Count) // If the user chooses a number that does not have an account we send them back to the main menu.
             {
-                Utility.UniversalReadKeyMeth();
+                Utility.UniversalReadKeyMethod();
                 return;
             }
 
             var sourceAccount = loggedInUser.Accounts[fromAccountIndex - 1]; //Use - 1 of the index because the index starts at 0 but we present it from 1.
 
             Console.Clear();
-            Console.WriteLine($"\nTransfer from {sourceAccount.AccountName}\nBalance: {sourceAccount.AccountBalance} {sourceAccount.Sign}\n" +
+            Console.WriteLine($"\nTransfer from {sourceAccount.AccountName}\nBalance: {sourceAccount.AccountBalance} {sourceAccount.CurrencySymbol}\n" +
             "\nHere are all the users in our system:");
             foreach (var user in users) //List all of the users in the system.
             {
@@ -80,7 +84,7 @@ namespace Sharp_Shooters
 
             if (recipientUser == null) //If the user does not exist, send back to main menu.
             {
-                Utility.UniversalReadKeyMeth();
+                Utility.UniversalReadKeyMethod();
                 return;
             }
 
@@ -91,13 +95,13 @@ namespace Sharp_Shooters
 
             if (toAccountIndex < 1 || toAccountIndex > recipientUser.Accounts.Count)
             {
-                Utility.UniversalReadKeyMeth();
+                Utility.UniversalReadKeyMethod();
                 return;
             }
 
             var destinationAccount = recipientUser.Accounts[toAccountIndex - 1];
 
-            Console.WriteLine($"\nTransfer to {recipientUser.UserName.ToUpper()}'s {destinationAccount.AccountName}\nBalance on your account {sourceAccount.AccountName} {sourceAccount.AccountBalance} {sourceAccount.Sign}");
+            Console.WriteLine($"\nTransfer to {recipientUser.UserName.ToUpper()}'s {destinationAccount.AccountName}\nBalance on your account {sourceAccount.AccountName} {sourceAccount.AccountBalance} {sourceAccount.CurrencySymbol}");
 
             Console.Write("Enter the amount to transfer: ");
             if (double.TryParse(Console.ReadLine(), out double amount))
@@ -105,17 +109,17 @@ namespace Sharp_Shooters
                 if (amount > 0 && amount <= sourceAccount.AccountBalance)
                 {
                     Timer transferTimer = new Timer(TransferCallback, new TransferData(loggedInUser, sourceAccount, recipientUser, destinationAccount, amount),  1 * 1000, Timeout.Infinite); //The transaction is scheduled 15 minutes forward in time.
-                    Console.WriteLine($"\nTransfer of {amount} {sourceAccount.Sign} to {recipientUser.UserName}'s {destinationAccount.AccountName} scheduled in 15 minutes.\nPress Enter to continue");
+                    Console.WriteLine($"\nTransfer of {amount} {sourceAccount.CurrencySymbol} to {recipientUser.UserName}'s {destinationAccount.AccountName} scheduled in 15 minutes.\nPress Enter to continue");
                     Console.ReadKey();
                 }
                 else
                 {
-                    Utility.UniversalReadKeyMeth();
+                    Utility.UniversalReadKeyMethod();
                 }
             }
             else
             {
-                Utility.UniversalReadKeyMeth();
+                Utility.UniversalReadKeyMethod();
             }
         }
 

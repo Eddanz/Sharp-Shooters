@@ -5,46 +5,46 @@ namespace Sharp_Shooters
     {
         public string AccountName { get; set; }
         public double AccountBalance { get; set; }
-        public string Currencys {  get; set; }
-        public string Sign { get; set; }
+        public string Currencies {  get; set; }
+        public string CurrencySymbol { get; set; }
 
-        public Accounts(string accountName, double accountBalance, string currency, string sign) //Constructor for the accounts.
+        public Accounts(string accountName, double accountBalance, string currency, string currencySymbol) //Constructor for the accounts.
         {
             AccountName = accountName;
             AccountBalance = accountBalance;
-            Currencys = currency;
-            Sign = sign;
+            Currencies = currency;
+            CurrencySymbol = currencySymbol;
         }
 
         public static void AccountOverview(User loggedInUser) //The method that shows what accounts that is avaliable for the logged in user.
         {
             Console.Clear();
-            Console.WriteLine($"\nThe bankaccounts for {loggedInUser.UserName.ToUpper()}:\n");
+            Console.WriteLine($"\nThe bank accounts for {loggedInUser.UserName.ToUpper()}:\n");
             int accountNumber = 0;
             foreach (var account in loggedInUser.Accounts) //Foreach loop that loops through the list of accounts for the user.
             {
                 accountNumber++;
-                Console.WriteLine($"Account {accountNumber}: {account.AccountName}\nBalance: {account.AccountBalance} {account.Sign}\n");
+                Console.WriteLine($"Account {accountNumber}: {account.AccountName}\nBalance: {account.AccountBalance} {account.CurrencySymbol}\n");
             }
         }
         public static void OpenNewAccount(User loggedInUser)//Method to open a new account.
         {
-            string sign = "";
+            string currencySymbol = "";
             string currency = "";
 
             Console.Write("Name the account: "); //The user can name the account
             string accountName = Console.ReadLine();
 
-            CurrencySelectionMenu(out currency, out sign);
+            CurrencySelectionMenu(out currency, out currencySymbol);
 
             Console.Write($"Deposit Cash in {accountName}: "); //The user deposits cash to the newly created account
             if (double.TryParse(Console.ReadLine(), out double deposit))
             {
-                Accounts newAccount = new Accounts(accountName, deposit, currency, sign);
+                Accounts newAccount = new Accounts(accountName, deposit, currency, currencySymbol);
                 loggedInUser.Accounts.Add(newAccount);
 
-                Console.WriteLine($"\n{accountName} has been created with a balance of {sign} {deposit}.");
-                Utility.UniqueReadKeyMeth();
+                Console.WriteLine($"\n{accountName} has been created with a balance of {currencySymbol} {deposit}.");
+                Utility.UniqueReadKeyMethod();
             }
         }
         public static void OpenSavingsAccount(User loggedInUser)//Method to open a savings account
@@ -52,25 +52,25 @@ namespace Sharp_Shooters
             string accountName = "Savings Account";
             double interest = 0.035; //We set the savings rate to 3.5%
             string currency = "";
-            string sign = "";
+            string currencySymbol = "";
 
-            CurrencySelectionMenu(out currency, out sign);
+            CurrencySelectionMenu(out currency, out currencySymbol);
 
             Console.Write($"Deposit Cash in {accountName}: ");
             if (double.TryParse(Console.ReadLine(), out double deposit))
             {
-                Accounts newAccount = new Accounts(accountName, deposit, currency, sign);
+                Accounts newAccount = new Accounts(accountName, deposit, currency, currencySymbol);
                 loggedInUser.Accounts.Add(newAccount);
 
-                Console.WriteLine($"\n{accountName} has been created with a balance of {sign} {deposit}");
-                Console.WriteLine($"The interest on your {accountName} will be {sign}: {deposit * interest:F2}");
-                Utility.UniqueReadKeyMeth();
+                Console.WriteLine($"\n{accountName} has been created with a balance of {currencySymbol} {deposit}");
+                Console.WriteLine($"The interest on your {accountName} will be {currencySymbol}: {deposit * interest:F2}");
+                Utility.UniqueReadKeyMethod();
             }
         }
-        public static void CurrencySelectionMenu(out string currency, out string sign)
+        public static void CurrencySelectionMenu(out string currency, out string currencySymbol)
         {
             currency = "";
-            sign = "";
+            currencySymbol = "";
             bool validCurrency = false; //Ensures that the user makes a valid choice
             while (!validCurrency) // Will loop the switch case until criteria is met
             {
@@ -82,17 +82,17 @@ namespace Sharp_Shooters
                 {
                     case "1":
                         currency = "EURO";
-                        sign = "£";
+                        currencySymbol = "£";
                         validCurrency = true;
                         break;
                     case "2":
                         currency = "USD";
-                        sign = "$";
+                        currencySymbol = "$";
                         validCurrency = true;
                         break;
                     case "3":
                         currency = "KRONOR";
-                        sign = "SEK";
+                        currencySymbol = "SEK";
                         validCurrency = true;
                         break;
                     default:

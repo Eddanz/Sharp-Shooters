@@ -87,11 +87,11 @@ namespace Sharp_Shooters
         {
             
             double returnCurrency = 1.0;
-            switch (fromCurrency.Currencys)
+            switch (fromCurrency.Currencies)
             {
                 
                 case "USD":
-                    switch (toCurrency.Currencys)
+                    switch (toCurrency.Currencies)
                     {
                         case "EURO":
                             returnCurrency = USDEURCUR;
@@ -102,7 +102,7 @@ namespace Sharp_Shooters
                     }
                     break;
                 case "EURO":
-                    switch (toCurrency.Currencys)
+                    switch (toCurrency.Currencies)
                     {
                         case "USD":
                             returnCurrency = EURUSDCUR;
@@ -113,7 +113,7 @@ namespace Sharp_Shooters
                     }
                     break;
                 case "KRONOR":
-                    switch (toCurrency.Currencys)
+                    switch (toCurrency.Currencies)
                     {
                         case "USD":
                             returnCurrency = KRONORUSDCUR;
@@ -129,9 +129,9 @@ namespace Sharp_Shooters
             }
             return returnCurrency;
         }
-        public static double ConvertCurrency(double amount, Accounts fromCurrency, Accounts toCurrency) // this method converts the currencys of the diffrent accounts by using the method "GetExchangeRate"
+        public static double ConvertCurrency(double amount, Accounts fromCurrency, Accounts toCurrency) // this method converts the currencies of the different accounts by using the method "GetExchangeRate"
         {
-            if (fromCurrency.Currencys == toCurrency.Currencys)
+            if (fromCurrency.Currencies == toCurrency.Currencies)
             {
                 // Currencies are the same, no need to convert
                 return amount;
@@ -151,7 +151,7 @@ namespace Sharp_Shooters
 
             foreach (var account in accounts) 
             {
-                if (account.Currencys != toCurrency.Currencys)
+                if (account.Currencies != toCurrency.Currencies)
                 {
                     double exchangeRate = GetExchangeRate(account, toCurrency);
                     double convertedAmount = account.AccountBalance * exchangeRate;
@@ -166,7 +166,7 @@ namespace Sharp_Shooters
             return totalAmount;
         }
 
-        public static void UpdateCurrency() //The Admin can update the currencys to the daily rates.
+        public static void UpdateCurrency() //The Admin can update the currencies to the daily rates.
         {
             Console.WriteLine("Welcome to the Currency updater 2.0" +
                 "\n\n[1] START" +
@@ -214,7 +214,7 @@ namespace Sharp_Shooters
             if (LoanList.Contains(loggedInUser))//If the list contains the user it sends them back to the mainmenu.
             {
                 Console.WriteLine("\nYou have already made a loan! PAY IT OFF");
-                Utility.UniqueReadKeyMeth();
+                Utility.UniqueReadKeyMethod();
 
             }
             else
@@ -232,12 +232,12 @@ namespace Sharp_Shooters
                     if (borrowAmount <= 0) //Error handling
                     {
                         Console.WriteLine("The amount must be greater than 0!");
-                        Utility.UniqueReadKeyMeth();
+                        Utility.UniqueReadKeyMethod();
                     }
                     if (borrowAmount > maxBorrowAmount)//Error handling
                     {
                         Console.WriteLine($"You cannot borrow more than five times the combined balance of all your accounts ({maxBorrowAmount:C}).");
-                        Utility.UniqueReadKeyMeth();
+                        Utility.UniqueReadKeyMethod();
                         return;
                     }
                     Accounts loan = new Accounts("Loan", borrowAmount, "KRONOR", "SEK");
@@ -246,13 +246,13 @@ namespace Sharp_Shooters
                     Console.Clear();
                     Console.WriteLine($"\nYou have borrowed {borrowAmount:C}. The amount has been added to your new loan account." +
                     $"\nThe interest rate on your loan will be {borrowAmount * 0.05:C}. Interest payments will begin next month.");
-                    Utility.UniqueReadKeyMeth();
+                    Utility.UniqueReadKeyMethod();
                    
                 }
                 else
                 {
                     Console.WriteLine("Invalid input for the borrowed amount. No money has been borrowed.");//Error handling
-                    Utility.UniqueReadKeyMeth();
+                    Utility.UniqueReadKeyMethod();
                 }
             }
         }

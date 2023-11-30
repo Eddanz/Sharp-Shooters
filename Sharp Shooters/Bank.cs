@@ -2,7 +2,7 @@
 namespace Sharp_Shooters
 {
     internal class Bank
-    {                                   //Main menu with all the optins the user can make.
+    {                                   //Main menu with all the options the user can make.
         public static void WelcomeMenu()
         {
             Console.Clear();
@@ -41,14 +41,14 @@ namespace Sharp_Shooters
             {
                 Console.Clear();
                 Console.Write($"\n===== You are logged in as: {loggedInUser.UserName.ToUpper()} =====" +
-                    $"\n\nMake a choise below" +
+                    $"\n\nMake a choice below" +
                     $"\n[1] Manage accounts" +
                     $"\n[2] Set up a loan" +
                     $"\n[3] Transfer" +
                     $"\n[4] Log out" +
-                    $"\n\nCHOISE: ");
-                string userChoise = Console.ReadLine();
-                switch (userChoise)
+                    $"\n\nCHOICE: ");
+                string userChoice = Console.ReadLine();
+                switch (userChoice)
                 {
                     case "1": //Use the Account overview method to display all the accounts the user has.
                         bool valid = false;
@@ -58,8 +58,8 @@ namespace Sharp_Shooters
                             Accounts.AccountOverview(loggedInUser);
                             Console.WriteLine("[1] Open a new account" +
                                  "\n[2] Go back to main menu"); //If the user presses "2" they can open a new account using either the "OpenNewAccount" or "OpenSavingsAccount" method.
-                            string userChoise1 = Console.ReadLine();
-                            switch (userChoise1)
+                            string userChoice1 = Console.ReadLine();
+                            switch (userChoice1)
                             {
                                 case "1": // The user can choose between opening a regular account or a savings account that has a rate of 3.5%.
                                     Console.Clear();
@@ -127,7 +127,7 @@ namespace Sharp_Shooters
             List<Admin> admins = Admin.InitializeAdmin();
             while (true)
             {
-                Console.BackgroundColor = ConsoleColor.Blue; //These lines controll the color theme of the program.
+                Console.BackgroundColor = ConsoleColor.Blue; //These lines control the color theme of the program.
                 Console.Clear();
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.Clear();
@@ -135,8 +135,8 @@ namespace Sharp_Shooters
                 Console.WriteLine("\nAre you a Customer or Admin?" +
                     "\n\n[1] Customer" +
                     "\n[2] Admin"); // IN the starting menu the user can choose to log in as admin or a regular customer.
-                string choise = Console.ReadLine();
-                switch (choise)
+                string choice = Console.ReadLine();
+                switch (choice)
                 {
                     case "1": 
                         User loggedInUser = User.LogIn(users);

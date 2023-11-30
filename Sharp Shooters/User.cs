@@ -36,8 +36,8 @@ namespace Sharp_Shooters
                     if (loggedInUser != null) //If loggedInUser has returned a value
                     {
                         Console.Clear();
-                        Console.WriteLine($"\nLog in succesfull, Welcome {loggedInUser.UserName.ToUpper()}!" +
-                            $"\nPlease wait while the information is retrived...");
+                        Console.WriteLine($"\nLog in successful, Welcome {loggedInUser.UserName.ToUpper()}!" +
+                            $"\nPlease wait while the information is retrieved...");
                         Thread.Sleep(2000);
                         return loggedInUser; //Returns the loggedInUser
 
@@ -52,7 +52,7 @@ namespace Sharp_Shooters
                 else //IF the user writes something else then numbers
                 {
                     loginAttempts--; //Remove one login attempt
-                    Console.WriteLine($"\nUnsuccesfull login. The Pincode can only contain numbers.\nYou have {loginAttempts} attempts left!\nPress enter to continue");
+                    Console.WriteLine($"\nUnsuccessful login. The pincode can only contain numbers.\nYou have {loginAttempts} attempts left!\nPress enter to continue");
                     Console.ReadLine();
                 }
             }

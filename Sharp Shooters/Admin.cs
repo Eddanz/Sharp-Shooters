@@ -11,7 +11,7 @@ namespace Sharp_Shooters
             UserName = username;
             PinCode = pincode;
         }
-        public static List<User> InitializeUser() //This mehtod creates all of the users and their accounts
+        public static List<User> InitializeUser() //This method creates all of the users and their accounts
         {
             List<Accounts> TheoAccounts = new List<Accounts> //List with accounts belonging to user: "Theo"
             {
@@ -81,15 +81,15 @@ namespace Sharp_Shooters
                 int enteredPincode = Utility.HidePincode();
                 if (enteredPincode != null)
                 {
-                    //Using the FirstOfDeafult and Lambda expression it searches through the list of admins and looks for a matching username and pincode, Return the the admin as loggedInAdmin.
+                    //Using the FirstOrDeafult and Lambda expression it searches through the list of admins and looks for a matching username and pincode, Return the the admin as loggedInAdmin.
 
                     Admin loggedInAdmin = admins.FirstOrDefault(a => a.UserName == enterName && a.PinCode == enteredPincode);
 
                     if (loggedInAdmin != null) //If loggedInAdmin has returned a value
                     {
                         Console.Clear();
-                        Console.WriteLine($"\nLog in succesfull, Welcome {loggedInAdmin.UserName.ToUpper()}!" +
-                            $"\nPlease wait while the information is retrived...");
+                        Console.WriteLine($"\nLog in successful, Welcome {loggedInAdmin.UserName.ToUpper()}!" +
+                            $"\nPlease wait while the information is retrieved...");
                         Thread.Sleep(2000);
                         return loggedInAdmin; //Returns the loggedInAdmin
 
@@ -103,7 +103,7 @@ namespace Sharp_Shooters
                 else //IF the admin writes something else then numbers
                 {
                     
-                    Console.WriteLine($"\nUnsuccesfull login. The Pincode can only contain numbers.\nPress enter to continue");
+                    Console.WriteLine($"\nUnsuccessful login. The pincode can only contain numbers.\nPress enter to continue");
                     Console.ReadLine();
                 }
             }
@@ -137,8 +137,8 @@ namespace Sharp_Shooters
                     "\n[3] Log out" +
                     "\n\nCHOISE:");
 
-                string adminChoise = Console.ReadLine();
-                switch (adminChoise)
+                string adminChoice = Console.ReadLine();
+                switch (adminChoice)
                 {
                     case "1":
                         CreateUser(users);
