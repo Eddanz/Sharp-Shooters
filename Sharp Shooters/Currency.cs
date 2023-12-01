@@ -166,46 +166,6 @@ namespace Sharp_Shooters
             return totalAmount;
         }
 
-        public static void UpdateCurrency() //The Admin can update the currencies to the daily rates.
-        {
-            Console.WriteLine("Welcome to the Currency updater 2.0" +
-                "\n\n[1] START" +
-                "\n[2] Back to Menu");
-            var MenuChoice = Console.ReadLine();
-            switch (MenuChoice)
-            {
-                case "1":
-                    try
-                    {
-                        Console.WriteLine("Update USD to EURO: ");
-                        USDEURCUR = Convert.ToDouble(Console.ReadLine());
-
-                        Console.WriteLine("Update USD to KRONOR: ");
-                        USDKRONORCUR = Convert.ToDouble(Console.ReadLine());
-
-                        Console.WriteLine("Update EURO to USD: ");
-                        EURUSDCUR = Convert.ToDouble(Console.ReadLine());
-
-                        Console.WriteLine("Update EURO to KRONOR: ");
-                        EURKRONORCUR = Convert.ToDouble(Console.ReadLine());
-
-                        Console.WriteLine("Update KRONOR to USD: ");
-                        KRONORUSDCUR = Convert.ToDouble(Console.ReadLine());
-
-                        Console.WriteLine("Update KRONOR to EURO: ");
-                        KRONOREURCUR = Convert.ToDouble(Console.ReadLine());
-                    }
-                    catch
-                    {
-                        Console.WriteLine("The value must be in numbers");
-                    }
-                    break;
-                case "2":
-                    
-                    return;
-            }
-        }
-
         public static void BorrowMoney(User loggedInUser, List<Accounts> accounts) //This method lets the take out a loan one time. The user can take a loan of maximum five times the value of all of their accounts.
         {
             Accounts SEK = new Accounts("SEK", 0, "KRONOR", "SEK");

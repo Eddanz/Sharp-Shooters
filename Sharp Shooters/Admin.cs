@@ -75,7 +75,7 @@ namespace Sharp_Shooters
             while (true) //While-loop that runs as long as the login attempts are not 0.
             {
                 Console.Clear();
-                Console.Write("Username: ");
+                Console.Write("\nUsername: ");
                 enterName = Console.ReadLine().ToLower();
                 Console.Write("Pincode: ");
                 int enteredPincode = Utility.HidePincode();
@@ -106,26 +106,104 @@ namespace Sharp_Shooters
                     Console.WriteLine($"\nUnsuccessful login. The pincode can only contain numbers.\nPress enter to continue");
                     Console.ReadLine();
                 }
+                return null;
             }
-            
-            return null;
         }
 
-        public static void CreateUser(List<User> users) //This methods lets the Admin create a new user
+        private static void CreateUser(List<User> users) //This methods lets the Admin create a new user
         {
             Console.Clear();
-            Console.WriteLine("===== Create a new user =====\n" +
-                "What is the name of the user?");
+            Console.WriteLine("\n===== Create a new user =====" +
+                "\nWhat is the name of the user?");
             string name = Console.ReadLine().ToLower();
             Console.WriteLine("What pincode should the user have?");
             int.TryParse(Console.ReadLine(), out int pincode);
-            List<Accounts> accountName = new List<Accounts>();
-            List<string> transactionName = new List<string>();
-            User user = new User(name, pincode, accountName, transactionName);
-            users.Add(user);
+            List<Accounts> accountList = new List<Accounts>();
+            List<string> transactionList = new List<string>();
+            User newUser = new User(name, pincode, accountList, transactionList);
+            users.Add(newUser);
+            Console.WriteLine("\nNew user created!" +
+                $"\n\nUsername: {newUser.UserName.ToUpper()} " +
+                $"\nPincode: {newUser.PinCode}");
+            Utility.UniqueReadKeyMethod();
         }
 
-        
+        private static void UpdateCurrency() //The Admin can update the currencies to the daily rates.
+        {
+            Console.Clear();
+            Console.WriteLine("\nWelcome to the Currency updater 2.0" +
+                "\n\n[1] START" +
+                "\n[2] Back to Menu");
+            var MenuChoice = Console.ReadLine();
+            bool update = false;
+            while (!update)
+            {
+                switch (MenuChoice)
+                {
+                    case "1":
+                        try
+                        {
+                            Console.Clear();
+                            Console.WriteLine($"\nUpdate USD to EURO (Current rate is {Currency.USDEURCUR}): ");
+                            double usdEur = Convert.ToDouble(Console.ReadLine());
+
+                            Console.WriteLine($"\nUpdate USD to KRONOR (Current rate is {Currency.USDKRONORCUR}): ");
+                            double usdKronor = Convert.ToDouble(Console.ReadLine());
+
+                            Console.WriteLine($"\nUpdate EURO to USD (Current rate is {Currency.EURUSDCUR}): ");
+                            double eurUsd = Convert.ToDouble(Console.ReadLine());
+
+                            Console.WriteLine($"\nUpdate EURO to KRONOR (Current rate is {Currency.EURKRONORCUR}): ");
+                            double eurKronor = Convert.ToDouble(Console.ReadLine());
+
+                            Console.WriteLine($"\nUpdate KRONOR to USD (Current rate is {Currency.KRONORUSDCUR}): ");
+                            double kronorUsd = Convert.ToDouble(Console.ReadLine());
+
+                            Console.WriteLine($"\nUpdate KRONOR to EURO (Current rate is {Currency.KRONOREURCUR}): ");
+                            double kronorEur = Convert.ToDouble(Console.ReadLine());
+
+                            Console.Clear();
+                            Console.WriteLine($"\nChanges made:" +
+                                $"\n\nUSD to EURO: \nOld rate: {Currency.USDEURCUR}, new rate: {usdEur}" +
+                                $"\n\nUSD to KRONOR: \nOld rate: {Currency.USDKRONORCUR}, new rate: {usdKronor}" +
+                                $"\n\nEURO to USD: \nOld rate: {Currency.EURUSDCUR}, new rate: {eurUsd}" +
+                                $"\n\nEURO to KRONOR: \nOld rate: {Currency.EURKRONORCUR}, new rate: {eurKronor}" +
+                                $"\n\nKRONOR to USD: \nOld rate: {Currency.KRONORUSDCUR}, new rate: {kronorUsd}" +
+                                $"\n\nKRONOR to EURO: \nOld rate: {Currency.KRONOREURCUR}, new rate: {kronorEur}" +
+                                $"\n\n[1] Accept changes\n[2] Discard changes");
+                            var updateChoice = Console.ReadLine();
+                            switch (updateChoice)
+                            {
+                                case "1":
+                                    Currency.USDEURCUR = usdEur;
+                                    Currency.USDKRONORCUR = usdKronor;
+                                    Currency.EURUSDCUR = eurUsd;
+                                    Currency.EURKRONORCUR = eurKronor;
+                                    Currency.KRONORUSDCUR = kronorUsd;
+                                    Currency.KRONOREURCUR = kronorEur;
+
+                                    Console.WriteLine("\nAll currencies updated!");
+                                    update = true;
+                                    Utility.UniqueReadKeyMethod();
+                                    break;
+
+                                case "2":
+                                    return;
+                            }
+                        }
+                        catch
+                        {
+                            Console.WriteLine("The value must be in numbers");
+                            Thread.Sleep(2000);
+                        }
+                        break;
+                    case "2":
+                        return;
+                }
+            }
+        }
+
+
         public static void AdminMenu(Admin loggedInAdmin, List<User> users) // the admin does not have any accounts or transfer. The admin only has "Create new user" and "Update Currency"
         {
             while (true)
@@ -144,7 +222,7 @@ namespace Sharp_Shooters
                         CreateUser(users);
                         break;
                     case "2":
-                        Currency.UpdateCurrency();
+                        UpdateCurrency();
                         break;
                     case "3":
                         Console.Clear();
