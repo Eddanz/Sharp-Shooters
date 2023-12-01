@@ -188,6 +188,8 @@ namespace Sharp_Shooters
                                     break;
 
                                 case "2":
+                                    Console.WriteLine("\nNo changes made!");
+                                    Utility.UniqueReadKeyMethod();
                                     return;
                             }
                         }
@@ -202,7 +204,6 @@ namespace Sharp_Shooters
                 }
             }
         }
-
 
         public static void AdminMenu(Admin loggedInAdmin, List<User> users) // the admin does not have any accounts or transfer. The admin only has "Create new user" and "Update Currency"
         {
