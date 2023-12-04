@@ -49,10 +49,10 @@ namespace Sharp_Shooters
 
             List<User> users = new List<User> //List of users
             {
-                new User("theo", 1111, TheoAccounts, TheoTransactions), //Created new objects from the user-class
-                new User("eddie", 2222, EddieAccounts, EddieTransactions),
-                new User("torbjorn", 3333 , TorBjornAccounts, TorBjornTransactions),
-                new User("simon", 4444, SimonAccounts, SimonTransactions)
+                new User("theo", 1111, TheoAccounts, TheoTransactions, 0), //Created new objects from the user-class
+                new User("eddie", 2222, EddieAccounts, EddieTransactions, 0),
+                new User("torbjorn", 3333 , TorBjornAccounts, TorBjornTransactions, 0),
+                new User("simon", 4444, SimonAccounts, SimonTransactions, 0)
 
             };
             return users;
@@ -112,6 +112,7 @@ namespace Sharp_Shooters
 
         private static void CreateUser(List<User> users) //This methods lets the Admin create a new user
         {
+            double initialTotalBalance = 0;
             Console.Clear();
             Console.WriteLine("\n===== Create a new user =====" +
                 "\nWhat is the name of the user?");
@@ -120,7 +121,7 @@ namespace Sharp_Shooters
             int.TryParse(Console.ReadLine(), out int pincode);
             List<Accounts> accountList = new List<Accounts>();
             List<string> transactionList = new List<string>();
-            User newUser = new User(name, pincode, accountList, transactionList);
+            User newUser = new User(name, pincode, accountList, transactionList, initialTotalBalance);
             users.Add(newUser);
             Console.WriteLine("\nNew user created!" +
                 $"\n\nUsername: {newUser.UserName.ToUpper()} " +

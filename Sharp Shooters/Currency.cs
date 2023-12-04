@@ -163,58 +163,112 @@ namespace Sharp_Shooters
                 }
             }
 
-            return totalAmount;
+            return Math.Round(totalAmount, 1);
         }
 
-        public static void BorrowMoney(User loggedInUser, List<Accounts> accounts) //This method lets the take out a loan one time. The user can take a loan of maximum five times the value of all of their accounts.
-        {
-            Accounts SEK = new Accounts("SEK", 0, "KRONOR", "SEK");
-            Console.Clear();
-            // Calculate the combined balance of all accounts
-            if (LoanList.Contains(loggedInUser))//If the list contains the user it sends them back to the mainmenu.
-            {
-                Console.WriteLine("\nYou have already made a loan! PAY IT OFF");
-                Utility.UniqueReadKeyMethod();
+        private static double maxBorrowMultiplier = 5;
+        private static double interestRate = 0.05;
 
+        public static void BorrowMoney(User loggedInUser, List<Accounts> accounts)
+        {
+            
+            double initialTotalBalance = loggedInUser.InitialTotalBalance; // initial value is always 0 when we start the program
+
+            if (initialTotalBalance == 0)
+            {
+                // Calculate the initial total balance only if it hasn't been calculated yet
+                initialTotalBalance = ConvertCurrency(accounts, new Accounts("SEK", 0, "KRONOR", "SEK"));
+                loggedInUser.InitialTotalBalance = initialTotalBalance; // assigns the new value so that the program wont run this function again for the specific user 
+            }
+
+            // Calculate the maximum amount the user can borrow initially (5 times the initial total balance)
+            double maxInitialBorrowAmount = initialTotalBalance * maxBorrowMultiplier;
+
+            // Calculate the total amount the user has already borrowed
+            double totalBorrowedAmount = CalculateTotalBorrowedAmount(loggedInUser);
+
+            // Calculate the remaining amount the user can borrow
+            double remainingBorrowLimit = maxInitialBorrowAmount - totalBorrowedAmount;
+
+            if (remainingBorrowLimit <= 0)
+            {
+                Console.WriteLine("\nYou have reached the maximum borrowing limit, PAY IT OFF!");
+                Utility.UniqueReadKeyMethod();
+                return;
             }
             else
             {
-                double combinedBalance = ConvertCurrency(accounts, SEK);
-                    //user.Accounts.Sum(account => account.AccountBalance);
-
-                // Maximum amount cannot be greater than five times the users total balance.    
-                double maxBorrowAmount = combinedBalance * 5;
-                Console.WriteLine($"\nYou can borrow up to {maxBorrowAmount:C}" +
-                "\nDue to an exceedingly high policy rate, the interest rate is currently at 5 percent" +
+                Console.Write($"\nYou can borrow up to {remainingBorrowLimit:C}" +
+                $"\nDue to an exceedingly high policy rate, the interest rate is currently at {interestRate:P}" +
                 "\nEnter the amount you want to borrow: ");
-                if (double.TryParse(Console.ReadLine(), out double borrowAmount))
+
+                if (TryGetBorrowAmount(out double borrowAmount) && IsValidBorrowAmount(borrowAmount, remainingBorrowLimit))
                 {
-                    if (borrowAmount <= 0) //Error handling
-                    {
-                        Console.WriteLine("The amount must be greater than 0!");
-                        Utility.UniqueReadKeyMethod();
-                    }
-                    if (borrowAmount > maxBorrowAmount)//Error handling
-                    {
-                        Console.WriteLine($"You cannot borrow more than five times the combined balance of all your accounts ({maxBorrowAmount:C}).");
-                        Utility.UniqueReadKeyMethod();
-                        return;
-                    }
+                    // Process the loan
                     Accounts loan = new Accounts("Loan", borrowAmount, "KRONOR", "SEK");
                     loggedInUser.Accounts.Add(loan);
-                    LoanList.Add(loggedInUser);//Adds the user to the list so they cant loan more than once.
+
+
                     Console.Clear();
+                    //Adds the user to the list so they cant loan more than once.
                     Console.WriteLine($"\nYou have borrowed {borrowAmount:C}. The amount has been added to your new loan account." +
-                    $"\nThe interest rate on your loan will be {borrowAmount * 0.05:C}. Interest payments will begin next month.");
+                        $"\nThe interest rate on your loan will be {borrowAmount * interestRate:C}. Interest payments will begin next month.");
                     Utility.UniqueReadKeyMethod();
-                   
                 }
                 else
                 {
-                    Console.WriteLine("Invalid input for the borrowed amount. No money has been borrowed.");//Error handling
+                    Console.WriteLine("Invalid input for the borrowed amount. No money has been borrowed.");
                     Utility.UniqueReadKeyMethod();
                 }
+                // Recalculate the total borrowed amount after processing the loan
+                //totalBorrowedAmount = CalculateTotalBorrowedAmount(loggedInUser);
+
+                // Recalculate the remaining amount the user can borrow
+                //remainingBorrowLimit = maxInitialBorrowAmount - totalBorrowedAmount;
             }
+
+        }
+
+        private static double CalculateTotalBorrowedAmount(User user)
+        {
+            // Calculate the total amount the user has already borrowed
+            double totalBorrowedAmount = user.Accounts
+                .Where(account => account.AccountName == "Loan")
+                .Sum(account => account.AccountBalance);
+
+            return totalBorrowedAmount;
+        }
+
+        private static bool TryGetBorrowAmount(out double borrowAmount)
+        {
+            if (double.TryParse(Console.ReadLine(), out borrowAmount))
+            {
+                return true;
+            }
+            else
+            {
+                Console.WriteLine("Invalid input for the borrowed amount.");
+                return false;
+            }
+        }
+
+        private static bool IsValidBorrowAmount(double borrowAmount, double remainingBorrowLimit)
+        {
+            if (borrowAmount <= 0)
+            {
+                Console.WriteLine("The amount must be greater than 0!");
+                Utility.UniqueReadKeyMethod();
+                return false;
+            }
+
+            if (borrowAmount > remainingBorrowLimit)
+            {
+                Console.WriteLine($"You cannot borrow more than the remaining limit ({remainingBorrowLimit:C}).");
+                Utility.UniqueReadKeyMethod();
+                return false;
+            }
+
+            return true;
         }
     }
 }

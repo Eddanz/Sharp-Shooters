@@ -7,13 +7,15 @@ namespace Sharp_Shooters
         public int PinCode { get; set; }
         public List<Accounts> Accounts { get; set; }
         public List<string> Transactions { get; set; }
+        public double InitialTotalBalance { get; set; }
 
-        public User(string name, int pincode, List<Accounts> accounts, List<string> transactions) //Constructor for the users.
+        public User(string name, int pincode, List<Accounts> accounts, List<string> transactions, double initialTotalBalance) //Constructor for the users.
         {
             UserName = name;
             PinCode = pincode;
             Accounts = accounts;
             Transactions = transactions;
+            InitialTotalBalance = initialTotalBalance;
         }
 
         public static User LogIn(List<User> users)
