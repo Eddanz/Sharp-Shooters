@@ -3,7 +3,7 @@ namespace Sharp_Shooters
 {
     internal class Bank
     {                                   //Main menu with all the options the user can make.
-        public static void WelcomeMenu()
+        private static void WelcomeMenu()
         {
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.White;
@@ -15,7 +15,7 @@ namespace Sharp_Shooters
             Console.ReadKey();
         }
 
-        public static void DailyMessage() 
+        private static void DailyMessage() 
         { 
             Random random = new Random();
             List<string> messages = new List<string>
@@ -35,7 +35,7 @@ namespace Sharp_Shooters
             Console.WriteLine(randomMessage);
         }
 
-        public static void MainMenu(User loggedInUser, List<User> users) //Overloading the method with the loggedin user and the list of all of the users created.
+        private static void MainMenu(User loggedInUser, List<User> users) //Overloading the method with the loggedin user and the list of all of the users created.
         {
             while (true) //While-loop so it loops back after the user is done with its action 
             {

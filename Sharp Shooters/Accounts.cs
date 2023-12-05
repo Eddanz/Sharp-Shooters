@@ -67,7 +67,7 @@ namespace Sharp_Shooters
                 Utility.UniqueReadKeyMethod();
             }
         }
-        public static void CurrencySelectionMenu(out string currency, out string currencySymbol)
+        private static void CurrencySelectionMenu(out string currency, out string currencySymbol)
         {
             currency = "";
             currencySymbol = "";
