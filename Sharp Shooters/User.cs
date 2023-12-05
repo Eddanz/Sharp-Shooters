@@ -59,14 +59,22 @@ namespace Sharp_Shooters
                     {
                         failedLoginAttempts[enterName]++; // Increment failed login attempts for the user
 
-                        if (failedLoginAttempts[enterName] >= 3)
+                        if (failedLoginAttempts[enterName] == 3)
                         {
                             User lockedUser = users.FirstOrDefault(a => a.UserName == enterName);//Search for the username in the list.
-                            users.Remove(lockedUser);//Remove the user in then list so they cant login again.
-                            if (!blockedUsers.Contains(lockedUser))
+                            if (lockedUser != null)
                             {
+                                users.Remove(lockedUser);//Remove the user in then list so they cant login again.
                                 blockedUsers.Add(lockedUser);
+                                Console.ForegroundColor = ConsoleColor.Red;
+                                Console.WriteLine($"No more tries for {enterName.ToUpper()}...");
+                                Console.WriteLine($"The user {enterName.ToUpper()} is now locked. Contact an Admin to solve the issue..");
+                                Utility.UniqueReadKeyMethod();
+                                return null; // Lock the user and exit the method
                             }
+                        }
+                        else if (failedLoginAttempts[enterName] > 3)
+                        {
                             Console.ForegroundColor = ConsoleColor.Red;
                             Console.WriteLine($"No more tries for {enterName.ToUpper()}...");
                             Console.WriteLine($"The user {enterName.ToUpper()} is now locked. Contact an Admin to solve the issue..");

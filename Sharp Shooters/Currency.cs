@@ -220,11 +220,7 @@ namespace Sharp_Shooters
                     Console.WriteLine("Invalid input for the borrowed amount. No money has been borrowed.");
                     Utility.UniqueReadKeyMethod();
                 }
-                // Recalculate the total borrowed amount after processing the loan
-                //totalBorrowedAmount = CalculateTotalBorrowedAmount(loggedInUser);
-
-                // Recalculate the remaining amount the user can borrow
-                //remainingBorrowLimit = maxInitialBorrowAmount - totalBorrowedAmount;
+                
             }
 
         }
