@@ -11,6 +11,7 @@ namespace Sharp_Shooters
             UserName = username;
             PinCode = pincode;
         }
+
         public static List<User> InitializeUser() //This method creates all of the users and their accounts
         {
             List<Accounts> TheoAccounts = new List<Accounts> //List with accounts belonging to user: "Theo"
@@ -49,12 +50,13 @@ namespace Sharp_Shooters
 
             List<User> users = new List<User> //List of users
             {
-                new User("theo", 1111, TheoAccounts, TheoTransactions, 0, 3), //Created new objects from the user-class
-                new User("eddie", 2222, EddieAccounts, EddieTransactions, 0, 3),
-                new User("torbjorn", 3333 , TorBjornAccounts, TorBjornTransactions, 0, 3),
-                new User("simon", 4444, SimonAccounts, SimonTransactions, 0, 3)
+                new User("theo", 1111, TheoAccounts, TheoTransactions, 0), //Created new objects from the user-class
+                new User("eddie", 2222, EddieAccounts, EddieTransactions, 0),
+                new User("torbjorn", 3333 , TorBjornAccounts, TorBjornTransactions, 0),
+                new User("simon", 4444, SimonAccounts, SimonTransactions, 0)
 
             };
+
             return users;
         }
 
@@ -121,7 +123,7 @@ namespace Sharp_Shooters
             int.TryParse(Console.ReadLine(), out int pincode);
             List<Accounts> accountList = new List<Accounts>();
             List<string> transactionList = new List<string>();
-            User newUser = new User(name, pincode, accountList, transactionList, initialTotalBalance, 3);
+            User newUser = new User(name, pincode, accountList, transactionList, initialTotalBalance);
             users.Add(newUser);
             Console.WriteLine("\nNew user created!" +
                 $"\n\nUsername: {newUser.UserName.ToUpper()} " +
@@ -206,6 +208,32 @@ namespace Sharp_Shooters
             }
         }
 
+        private static void UnblockUser(List<User> users, List<User> blockedUsers)
+        {
+            Console.Clear();
+            Console.WriteLine("\nBlocked users:");
+            foreach (User user in blockedUsers)
+            {
+                Console.WriteLine(user.UserName.ToUpper());
+            }
+            Console.WriteLine("\nEnter the name of the user you want to unblock: ");
+            string enterName = Console.ReadLine().ToLower();
+            var unblockedUser = blockedUsers.FirstOrDefault(u => u.UserName == enterName);
+
+            if (unblockedUser == null) 
+            {
+                Utility.UniversalReadKeyMethod();
+                return;
+            }
+            else if (unblockedUser.UserName == enterName)
+            {
+                Console.WriteLine($"\n{unblockedUser.UserName.ToUpper()} is no longer blocked.");
+                blockedUsers.Remove(unblockedUser);
+                users.Add(unblockedUser);
+                Utility.UniqueReadKeyMethod();
+            }
+        }
+
         public static void AdminMenu(Admin loggedInAdmin, List<User> users) // the admin does not have any accounts or transfer. The admin only has "Create new user" and "Update Currency"
         {
             while (true)
@@ -214,8 +242,9 @@ namespace Sharp_Shooters
                 Console.Write($"\n===== You are logged in as: {loggedInAdmin.UserName.ToUpper()} =====" +
                     "\n\n[1] Create a new user" +
                     "\n[2] Update currency" +
-                    "\n[3] Log out" +
-                    "\n\nCHOISE:");
+                    "\n[3] Unblock users" +
+                    "\n[4] Log out" +
+                    "\n\nCHOISE: ");
 
                 string adminChoice = Console.ReadLine();
                 switch (adminChoice)
@@ -227,6 +256,9 @@ namespace Sharp_Shooters
                         UpdateCurrency();
                         break;
                     case "3":
+                        UnblockUser(users, User.blockedUsers);
+                        break;
+                    case "4":
                         Console.Clear();
                         Console.WriteLine("You are now logged out...");
                         Thread.Sleep(3000);
