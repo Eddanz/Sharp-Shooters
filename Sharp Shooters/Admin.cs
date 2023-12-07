@@ -24,7 +24,7 @@ namespace Sharp_Shooters
             List<Accounts> EddieAccounts = new List<Accounts> //List with accounts belonging to user:"Eddie"
             {
                 new Accounts("Salary:", 111111, "EURO", "£"),
-                new Accounts("Savings:", 20, "USD", "$"),
+                new Accounts("Savings:", 0, "USD", "$"),
                 new Accounts("CS Skins:", 15000, "KRONOR", "SEK")
             };
             
@@ -210,27 +210,35 @@ namespace Sharp_Shooters
 
         private static void UnblockUser(List<User> users, List<User> blockedUsers)
         {
-            Console.Clear();
-            Console.WriteLine("\nBlocked users:");
-            foreach (User user in blockedUsers)
+            if (blockedUsers.Count == 0)
             {
-                Console.WriteLine(user.UserName.ToUpper());
-            }
-            Console.WriteLine("\nEnter the name of the user you want to unblock: ");
-            string enterName = Console.ReadLine().ToLower();
-            var unblockedUser = blockedUsers.FirstOrDefault(u => u.UserName == enterName);
-
-            if (unblockedUser == null) 
-            {
-                Utility.UniversalReadKeyMethod();
-                return;
-            }
-            else if (unblockedUser.UserName == enterName)
-            {
-                Console.WriteLine($"\n{unblockedUser.UserName.ToUpper()} is no longer blocked.");
-                blockedUsers.Remove(unblockedUser);
-                users.Add(unblockedUser);
+                Console.WriteLine("\nNo blocked users exists");
                 Utility.UniqueReadKeyMethod();
+            }
+            else
+            {
+                Console.Clear();
+                Console.WriteLine("\nBlocked users:");
+                foreach (User user in blockedUsers)
+                {
+                    Console.WriteLine(user.UserName.ToUpper());
+                }
+                Console.WriteLine("\nEnter the name of the user you want to unblock: ");
+                string enterName = Console.ReadLine().ToLower();
+                var unblockedUser = blockedUsers.FirstOrDefault(u => u.UserName == enterName);
+
+                if (unblockedUser == null)
+                {
+                    Utility.UniversalReadKeyMethod();
+                    return;
+                }
+                else if (unblockedUser.UserName == enterName)
+                {
+                    Console.WriteLine($"\n{unblockedUser.UserName.ToUpper()} is no longer blocked.");
+                    blockedUsers.Remove(unblockedUser);
+                    users.Add(unblockedUser);
+                    Utility.UniqueReadKeyMethod();
+                }
             }
         }
 
