@@ -87,8 +87,15 @@ namespace Sharp_Shooters
                 return;
             }
 
-            Accounts.AccountOverview(recipientUser); //Shows all of the accounts of the recipient user.
-
+            Console.Clear();
+            Console.WriteLine($"\nThe bank accounts for {recipientUser.UserName.ToUpper()}:\n");
+            int accountNumber = 0;
+            foreach (var account in recipientUser.Accounts) //Shows all of the accounts of the recipient user.
+            {
+                accountNumber++;
+                Console.WriteLine($"Account {accountNumber}: {account.AccountName}");
+            }
+            
             Console.WriteLine("Which account do you want to transfer to?");
             int.TryParse(Console.ReadLine(), out int toAccountIndex);
 
