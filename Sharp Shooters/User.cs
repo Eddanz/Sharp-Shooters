@@ -66,8 +66,7 @@ namespace Sharp_Shooters
                             {
                                 users.Remove(lockedUser);//Remove the user in then list so they cant login again.
                                 blockedUsers.Add(lockedUser);
-                                Console.ForegroundColor = ConsoleColor.Red;
-                                Console.WriteLine($"No more tries for {enterName.ToUpper()}...");
+                                Console.WriteLine($"\nNo more tries for {enterName.ToUpper()}...");
                                 Console.WriteLine($"The user {enterName.ToUpper()} is now locked. Contact an Admin to solve the issue..");
                                 Utility.UniqueReadKeyMethod();
                                 return null; // Lock the user and exit the method
@@ -75,8 +74,7 @@ namespace Sharp_Shooters
                         }
                         else if (failedLoginAttempts[enterName] > 3)
                         {
-                            Console.ForegroundColor = ConsoleColor.Red;
-                            Console.WriteLine($"No more tries for {enterName.ToUpper()}...");
+                            Console.WriteLine($"\nNo more tries for {enterName.ToUpper()}...");
                             Console.WriteLine($"The user {enterName.ToUpper()} is now locked. Contact an Admin to solve the issue..");
                             Utility.UniqueReadKeyMethod();
                             return null; // Lock the user and exit the method

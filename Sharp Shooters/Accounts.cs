@@ -27,7 +27,7 @@ namespace Sharp_Shooters
                 Console.WriteLine($"Account {accountNumber}: {account.AccountName}\nBalance: {Math.Round(account.AccountBalance, 2)} {account.CurrencySymbol}\n");
             }
         }
-        public static void OpenNewAccount(User loggedInUser)//Method to open a new account.
+        public static void OpenNewAccount(User loggedInUser)//Method to open a new account. 
         {
             string currencySymbol = "";
             string currency = "";
@@ -47,6 +47,43 @@ namespace Sharp_Shooters
                 Utility.UniqueReadKeyMethod();
             }
         }
+
+        public static void DeleteAccount(User loggedInUser)
+        {
+            // Create a list of accounts with a balance of 0
+            var accountsWithZeroBalance = loggedInUser.Accounts.Where(account => account.AccountBalance == 0).ToList();
+            Console.Clear();
+            int accountNumber = 0;
+            if (accountsWithZeroBalance.Count == 0)
+            {
+                Console.WriteLine("\nYou can only remove accounts with the balance 0, none found.");
+                Utility.UniqueReadKeyMethod();
+            }
+            else 
+            {
+                Console.WriteLine("\nAccounts with the balance of 0:");
+                foreach (var account in accountsWithZeroBalance)
+                {
+                    accountNumber++;
+                    Console.WriteLine($"\nAccount {accountNumber}: {account.AccountName}");
+                }
+
+                Console.WriteLine("\nWhich account do you want to remove?");
+                int.TryParse(Console.ReadLine(), out int RemoveAccount);
+
+                if (RemoveAccount < 1 || RemoveAccount > accountsWithZeroBalance.Count) // If the user chooses an invalid account number, return to the main menu.
+                {
+                    Utility.UniversalReadKeyMethod();
+                    return;
+                }
+
+                var deleteAccount = accountsWithZeroBalance[RemoveAccount - 1];
+                loggedInUser.Accounts.Remove(deleteAccount);
+                Console.WriteLine($"\nYou have removed {deleteAccount.AccountName}");
+                Utility.UniqueReadKeyMethod();
+            }
+        }
+
         public static void OpenSavingsAccount(User loggedInUser)//Method to open a savings account
         {
             string accountName = "Savings Account";

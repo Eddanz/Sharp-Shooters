@@ -5,6 +5,7 @@ namespace Sharp_Shooters
     {                                   //Main menu with all the options the user can make.
         private static void WelcomeMenu()
         {
+            Console.Beep();
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("\n         Welcome to SharpShooter Bank" +
@@ -57,7 +58,8 @@ namespace Sharp_Shooters
                             Console.Clear();
                             Accounts.AccountOverview(loggedInUser);
                             Console.WriteLine("[1] Open a new account" +
-                                 "\n[2] Go back to main menu"); //If the user presses "2" they can open a new account using either the "OpenNewAccount" or "OpenSavingsAccount" method.
+                                 "\n[2] Delete account" +
+                                 "\n[3] Go back to main menu"); //If the user presses "2" they can open a new account using either the "OpenNewAccount" or "OpenSavingsAccount" method.
                             string userChoice1 = Console.ReadLine();
                             switch (userChoice1)
                             {
@@ -84,7 +86,10 @@ namespace Sharp_Shooters
                                             break;
                                     }
                                     break;
-                                case "2": //Pressing "2" returns the user to main menu.
+                                case "2":
+                                    Accounts.DeleteAccount(loggedInUser);
+                                    break;
+                                case "3": //Pressing "2" returns the user to main menu.
                                     valid = true;
                                     break;
 
@@ -138,7 +143,7 @@ namespace Sharp_Shooters
                 string choice = Console.ReadLine();
                 switch (choice)
                 {
-                    case "1": 
+                    case "1":
                         User loggedInUser = User.LogIn(users);
                         if (loggedInUser != null)
                         {

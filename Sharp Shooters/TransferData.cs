@@ -20,7 +20,6 @@ namespace Sharp_Shooters
 
         public static void Transfer(User loggedInUser, List<User> users) //This method does the transfers.
         {
-
             Console.WriteLine("\n[1] New transfer\n[2] Transfer history");
             string input = Console.ReadLine();
 

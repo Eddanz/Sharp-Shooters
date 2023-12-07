@@ -198,17 +198,24 @@ namespace Sharp_Shooters
             }
             else
             {
-                Console.Write($"\nYou can borrow up to {remainingBorrowLimit:C}" +
+                Console.Write($"\nYou can borrow up to {remainingBorrowLimit:C} (No currency exchange fees)" +
                 $"\nDue to an exceedingly high policy rate, the interest rate is currently at {interestRate:P}" +
                 "\nEnter the amount you want to borrow: ");
 
                 if (TryGetBorrowAmount(out double borrowAmount) && IsValidBorrowAmount(borrowAmount, remainingBorrowLimit))
                 {
                     // Process the loan
-                    Accounts loan = new Accounts("Loan", borrowAmount, "KRONOR", "SEK");
-                    loggedInUser.Accounts.Add(loan);
-
-
+                    Accounts FindAccount = loggedInUser.Accounts.FirstOrDefault(a => a.AccountName == "Loan");
+                    if (FindAccount == null) // If the user does not have a Loan account, create Loan account.
+                    {
+                        Accounts loan = new Accounts("Loan", borrowAmount, "KRONOR", "SEK");
+                        loggedInUser.Accounts.Add(loan);
+                    }
+                    else // Adds the balance to existing Loan account.
+                    {
+                        FindAccount.AccountBalance += borrowAmount;
+                    }
+                    
                     Console.Clear();
                     //Adds the user to the list so they cant loan more than once.
                     Console.WriteLine($"\nYou have borrowed {borrowAmount:C}. The amount has been added to your new loan account." +
@@ -220,9 +227,7 @@ namespace Sharp_Shooters
                     Console.WriteLine("Invalid input for the borrowed amount. No money has been borrowed.");
                     Utility.UniqueReadKeyMethod();
                 }
-                
             }
-
         }
 
         private static double CalculateTotalBorrowedAmount(User user)

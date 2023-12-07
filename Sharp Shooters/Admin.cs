@@ -24,7 +24,7 @@ namespace Sharp_Shooters
             List<Accounts> EddieAccounts = new List<Accounts> //List with accounts belonging to user:"Eddie"
             {
                 new Accounts("Salary:", 111111, "EURO", "£"),
-                new Accounts("Savings:", 20, "USD", "$"),
+                new Accounts("Savings:", 0, "USD", "$"),
                 new Accounts("CS Skins:", 15000, "KRONOR", "SEK")
             };
             
