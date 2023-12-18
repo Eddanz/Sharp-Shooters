@@ -8,4 +8,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Twilio" Version="6.15.2" />
+  </ItemGroup>
+
 </Project>

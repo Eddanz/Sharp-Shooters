@@ -114,7 +114,7 @@ namespace Sharp_Shooters
             {
                 if (amount > 0 && amount <= sourceAccount.AccountBalance)
                 {
-                    Timer transferTimer = new Timer(TransferCallback, new TransferData(loggedInUser, sourceAccount, recipientUser, destinationAccount, amount),  1 * 1000, Timeout.Infinite); //The transaction is scheduled 15 minutes forward in time.
+                    Timer transferTimer = new Timer(TransferCallback, new TransferData(loggedInUser, sourceAccount, recipientUser, destinationAccount, amount), 1000 *  60 * 15, Timeout.Infinite); //The transaction is scheduled 15 minutes forward in time.
                     Console.WriteLine($"\nTransfer of {amount} {sourceAccount.CurrencySymbol} to {recipientUser.UserName}'s {destinationAccount.AccountName} scheduled in 15 minutes.\nPress Enter to continue");
                     Console.ReadKey();
                 }

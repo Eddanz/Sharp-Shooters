@@ -1,6 +1,8 @@
 ﻿
 using System.Reflection.Metadata;
-
+using Twilio;
+using Twilio.Rest.Api.V2010.Account;
+using Twilio.Types;
 namespace Sharp_Shooters
 {
     internal class User //Defines what a user is with the properties below.
@@ -23,10 +25,10 @@ namespace Sharp_Shooters
             Transactions = transactions;
             InitialTotalBalance = initialTotalBalance;
         }
-               
+
         public static User LogIn(List<User> users)
         {
-            
+
             while (true)
             {
                 Console.Clear();
@@ -50,10 +52,11 @@ namespace Sharp_Shooters
                     {
                         Console.Clear();
                         Console.WriteLine($"\nLog in successful, Welcome {loggedInUser.UserName.ToUpper()}!" +
-                            $"\nPlease wait while the information is retrieved...");
+                        $"\nPlease wait while the information is retrieved...");
                         Thread.Sleep(2000);
                         failedLoginAttempts[enterName] = 0; // Reset failed login attempts upon successful login
                         return loggedInUser;
+
                     }
                     else
                     {

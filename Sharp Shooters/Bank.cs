@@ -59,7 +59,8 @@ namespace Sharp_Shooters
                             Accounts.AccountOverview(loggedInUser);
                             Console.WriteLine("[1] Open a new account" +
                                  "\n[2] Delete account" +
-                                 "\n[3] Go back to main menu"); //If the user presses "2" they can open a new account using either the "OpenNewAccount" or "OpenSavingsAccount" method.
+                                 "\n[3] Future payments" +
+                                 "\n[4] Go back to main menu"); //If the user presses "2" they can open a new account using either the "OpenNewAccount" or "OpenSavingsAccount" method.
                             string userChoice1 = Console.ReadLine();
                             switch (userChoice1)
                             {
@@ -89,7 +90,10 @@ namespace Sharp_Shooters
                                 case "2":
                                     Accounts.DeleteAccount(loggedInUser);
                                     break;
-                                case "3": //Pressing "2" returns the user to main menu.
+                                case "3":
+                                    Currency.LoanPayment();
+                                    break;
+                                case "4": //Pressing "2" returns the user to main menu.
                                     valid = true;
                                     break;
 

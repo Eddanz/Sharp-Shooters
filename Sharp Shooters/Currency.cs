@@ -10,6 +10,7 @@ namespace Sharp_Shooters
         private static double _kronorUsdCur = 0.1;
         private static double _kronorEurCur = 0.091;
         public static List<User> LoanList = new List<User>(); //This list regulates so the user can only make a loan once.
+        public static List<LoanTransaction> loanTransactions = new List<LoanTransaction>();
 
         public static double USDEURCUR //USD Dollar to Euro
         {
@@ -185,7 +186,7 @@ namespace Sharp_Shooters
             double maxInitialBorrowAmount = initialTotalBalance * maxBorrowMultiplier;
 
             // Calculate the total amount the user has already borrowed
-            double totalBorrowedAmount = CalculateTotalBorrowedAmount(loggedInUser);
+            double totalBorrowedAmount = CalculateTotalBorrowedAmount(loanTransactions);
 
             // Calculate the remaining amount the user can borrow
             double remainingBorrowLimit = maxInitialBorrowAmount - totalBorrowedAmount;
@@ -199,21 +200,25 @@ namespace Sharp_Shooters
             else
             {
                 Console.Write($"\nYou can borrow up to {remainingBorrowLimit:C} (No currency exchange fees)" +
-                $"\nDue to an exceedingly high policy rate, the interest rate is currently at {interestRate:P}" +
+                $"\nThe loan period is 10 years, Due to an exceedingly high policy rate, the interest rate is currently at {interestRate:P}" +
                 "\nEnter the amount you want to borrow: ");
 
                 if (TryGetBorrowAmount(out double borrowAmount) && IsValidBorrowAmount(borrowAmount, remainingBorrowLimit))
                 {
                     // Process the loan
-                    Accounts FindAccount = loggedInUser.Accounts.FirstOrDefault(a => a.AccountName == "Loan");
-                    if (FindAccount == null) // If the user does not have a Loan account, create Loan account.
+                    Accounts findAccount = loggedInUser.Accounts.FirstOrDefault(a => a.AccountName == "Loan");
+                    if (findAccount == null) // If the user does not have a Loan account, create Loan account.
                     {
                         Accounts loan = new Accounts("Loan", borrowAmount, "KRONOR", "SEK");
                         loggedInUser.Accounts.Add(loan);
+                        LoanTransaction loanTransaction = new LoanTransaction(borrowAmount);
+                        loanTransactions.Add(loanTransaction);
                     }
                     else // Adds the balance to existing Loan account.
                     {
-                        FindAccount.AccountBalance += borrowAmount;
+                        findAccount.AccountBalance += borrowAmount;
+                        LoanTransaction loanTransaction = new LoanTransaction(borrowAmount);
+                        loanTransactions.Add(loanTransaction);
                     }
                     
                     Console.Clear();
@@ -230,13 +235,10 @@ namespace Sharp_Shooters
             }
         }
 
-        private static double CalculateTotalBorrowedAmount(User user)
+        private static double CalculateTotalBorrowedAmount(List<LoanTransaction> loanTransactions)
         {
-            // Calculate the total amount the user has already borrowed
-            double totalBorrowedAmount = user.Accounts
-                .Where(account => account.AccountName == "Loan")
-                .Sum(account => account.AccountBalance);
-
+            //Calculate the total amount the user has already borrowed
+            double totalBorrowedAmount = loanTransactions.Sum(transaction => transaction.Amount);
             return totalBorrowedAmount;
         }
 
@@ -270,6 +272,17 @@ namespace Sharp_Shooters
             }
 
             return true;
+        }
+        public static void LoanPayment()
+        {
+            double totalBorrowedAmount = CalculateTotalBorrowedAmount(loanTransactions); //Caclute the total borrowed amount
+            double monthlyInterestPayment = totalBorrowedAmount * 0.05 / 12; //Calculate the intreset on the loan
+            double monthlyAmortizationPayment = totalBorrowedAmount / 120; //Calculate the amorization
+
+            Console.WriteLine($"You have loaned {totalBorrowedAmount:C}" +
+            $"\nThe next payment for your intrest exchange is: {monthlyInterestPayment:C}" +
+            $"\nThe amortization for your loan is: {monthlyAmortizationPayment:C}");
+            Utility.UniqueReadKeyMethod();
         }
     }
 }
