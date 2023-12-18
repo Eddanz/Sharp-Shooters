@@ -94,9 +94,9 @@ Follow the instructions provided in the [Getting Started](#getting-started) sect
 
 ## Contributor
 
-[Eddanz](https://github.com/Eddanz)
-[Simonnilsson9](https://github.com/simonnilsson9))
-[Waltersdubbelnugge](https://github.com/waltersdubbelnugge)
-[Kamelen123](https://github.com/Kamelen123)
+- [Eddanz](https://github.com/Eddanz)
+- [Simonnilsson9](https://github.com/simonnilsson9)
+- [Waltersdubbelnugge](https://github.com/waltersdubbelnugge)
+- [Kamelen123](https://github.com/Kamelen123)
 
 Link to UML: https://t.ly/gTMZA
