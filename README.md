@@ -20,7 +20,7 @@ This C# banking system, named Sharp_Shooters, is designed to provide users with 
 - [Getting Started](#getting-started)
 - [Features](#features)
 - [Usage](#usage)
-- [Contributor](#contributor)
+- [Contributors](#contributors)
 
 ## Classes
 
@@ -92,7 +92,7 @@ This C# banking system, named Sharp_Shooters, is designed to provide users with 
 
 Follow the instructions provided in the [Getting Started](#getting-started) section to run the application. Explore the different features available for both regular customers and administrators.
 
-## Contributor
+## Contributors
 
 - [Eddanz](https://github.com/Eddanz)
 - [Simonnilsson9](https://github.com/simonnilsson9)
